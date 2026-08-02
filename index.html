@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuluLab — Custom Web Application Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0B1957; --bg-2:#0A1648; --bg-3:#0D1B5E; --bg-card:#0F1E66; --bg-elevated:#13216F;
+  --fg:#F8F3EA; --fg-2:rgba(248,243,234,.72); --fg-3:rgba(248,243,234,.42);
+  --accent:#FA9EBC; --accent-2:#FFDBD1; --accent-deep:#E87E9C;
+  --pink-soft:rgba(250,158,188,.1); --pink-glow:rgba(250,158,188,.18);
+  --border:rgba(248,243,234,.08); --border-bright:rgba(250,158,188,.28);
+  --grid-line:rgba(248,243,234,.04);
+  --display:'Space Grotesk',sans-serif; --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--fg);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;position:relative}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:1;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%)}
+.cursor{position:fixed;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;opacity:.4}
+@media(max-width:900px){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:1000;width:0;box-shadow:0 0 12px var(--accent)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.4rem 3rem;display:flex;justify-content:space-between;align-items:center;transition:all .4s}
+nav.scrolled{padding:.9rem 3rem;background:rgba(11,25,87,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--display);font-weight:600;font-size:1.4rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.6rem;color:var(--fg);text-decoration:none}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--bg);position:relative;overflow:hidden}
+.logo-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.4) 50%,transparent 60%);animation:shimmer 3s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{color:var(--fg-2);text-decoration:none;font-size:.88rem;font-weight:500;position:relative;transition:color .3s;font-family:var(--mono);text-transform:lowercase}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--fg)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:.6rem 1.3rem;border:1px solid var(--border-bright);color:var(--accent);text-decoration:none;font-size:.83rem;font-weight:600;border-radius:6px;transition:all .3s;background:var(--pink-soft);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;display:inline-flex;align-items:center;gap:.5rem}
+.nav-cta:hover{background:var(--accent);color:var(--bg);border-color:var(--accent);box-shadow:0 8px 24px rgba(250,158,188,.25)}
+
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;padding:8rem 3rem 5rem;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.mesh{position:absolute;border-radius:50%;filter:blur(90px);animation:float 22s ease-in-out infinite}
+.mesh-1{width:560px;height:560px;background:radial-gradient(circle,var(--accent),transparent 70%);top:-150px;right:-100px;opacity:.35}
+.mesh-2{width:480px;height:480px;background:radial-gradient(circle,var(--accent-2),transparent 70%);bottom:-100px;left:-150px;opacity:.25;animation-delay:-11s}
+.mesh-3{width:360px;height:360px;background:radial-gradient(circle,#5E7BFF,transparent 70%);top:35%;left:40%;opacity:.2;animation-delay:-6s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-40px) scale(1.08)}66%{transform:translate(-30px,30px) scale(.94)}}
+.hero-grid-deco{position:absolute;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at 30% 40%,black 0%,transparent 60%);-webkit-mask-image:radial-gradient(ellipse at 30% 40%,black 0%,transparent 60%)}
+
+.hero-content{position:relative;z-index:2;max-width:1400px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.35fr 1fr;gap:4rem;align-items:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.7rem;padding:.45rem 1rem;background:var(--pink-soft);border:1px solid var(--border-bright);border-radius:100px;font-family:var(--mono);font-size:.74rem;color:var(--accent);margin-bottom:2rem;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
+.hero-eyebrow .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 10px var(--accent)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.hero h1{font-family:var(--display);font-size:clamp(2.8rem,6.8vw,5.6rem);font-weight:500;line-height:1;letter-spacing:-.035em;margin-bottom:1.8rem}
+.hero h1 .accent{font-weight:300;font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .display{font-weight:700;display:block}
+.hero-sub{font-size:1.08rem;color:var(--fg-2);max-width:540px;margin-bottom:2.5rem;line-height:1.7}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn-primary{padding:.95rem 1.8rem;background:var(--accent);color:var(--bg);border:none;border-radius:6px;font-family:var(--mono);font-weight:600;font-size:.85rem;cursor:none;display:inline-flex;align-items:center;gap:.6rem;transition:all .3s;text-decoration:none;text-transform:uppercase;letter-spacing:.06em}
+.btn-primary:hover{background:var(--accent-2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(250,158,188,.35)}
+.btn-secondary{padding:.95rem 1.8rem;background:transparent;color:var(--fg);border:1px solid var(--border-bright);border-radius:6px;font-family:var(--mono);font-weight:500;font-size:.85rem;cursor:none;display:inline-flex;align-items:center;gap:.6rem;transition:all .3s;text-decoration:none;text-transform:uppercase;letter-spacing:.06em}
+.btn-secondary:hover{border-color:var(--accent);background:var(--pink-soft);color:var(--accent)}
+
+.hero-visual{position:relative;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1.5rem;font-family:var(--mono);font-size:.8rem;line-height:1.85;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px var(--border-bright);overflow:hidden}
+.hero-visual::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.terminal-header{display:flex;gap:.4rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);align-items:center}
+.terminal-dot{width:9px;height:9px;border-radius:50%}
+.terminal-dot.red{background:#FF5F57}.terminal-dot.yellow{background:#FEBC2E}.terminal-dot.green{background:#28C840}
+.terminal-title{margin-left:auto;font-size:.7rem;color:var(--fg-3);letter-spacing:.05em}
+.terminal-line{color:var(--fg-2)}
+.terminal-line .prompt{color:var(--accent);margin-right:.5rem}
+.terminal-line .keyword{color:#7AA2FF}
+.terminal-line .string{color:var(--accent-2)}
+.terminal-line .function{color:var(--accent)}
+.terminal-line .comment{color:var(--fg-3);font-style:italic}
+.terminal-line .output{color:var(--fg)}
+.terminal-line .ok{color:#4ADE80}
+.cursor-blink{display:inline-block;width:7px;height:13px;background:var(--accent);animation:blink 1s infinite;vertical-align:middle}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+.hero-stats{position:relative;z-index:2;max-width:1400px;margin:4.5rem auto 0;display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:1.5rem}
+.stat{display:flex;flex-direction:column}
+.stat-num{font-family:var(--display);font-size:1.9rem;font-weight:600;color:var(--fg);line-height:1}
+.stat-num .plus{color:var(--accent)}
+.stat-label{font-family:var(--mono);font-size:.7rem;color:var(--fg-3);text-transform:uppercase;letter-spacing:.12em;margin-top:.4rem}
+.scroll-hint{font-family:var(--mono);font-size:.7rem;color:var(--fg-3);display:flex;align-items:center;gap:.5rem;text-transform:uppercase;letter-spacing:.12em}
+.scroll-hint i{animation:bounce 2s infinite;color:var(--accent)}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+section{position:relative;padding:7rem 3rem;z-index:2}
+.container{max-width:1400px;margin:0 auto}
+.section-header{margin-bottom:4.5rem;max-width:840px}
+.section-eyebrow{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--mono);font-size:.74rem;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1.4rem;font-weight:500}
+.section-eyebrow .line{width:28px;height:1px;background:var(--accent)}
+.section-eyebrow .num{color:var(--fg-3)}
+.section-title{font-family:var(--display);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:500;line-height:1.1;letter-spacing:-.025em;margin-bottom:1.4rem}
+.section-title .accent{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600}
+.section-sub{font-size:1.05rem;color:var(--fg-2);max-width:680px;line-height:1.7}
+
+.profile-section{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.profile-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:start}
+.profile-sticky{position:sticky;top:6rem}
+.profile-sticky h3{font-family:var(--display);font-size:1.6rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.015em}
+.profile-sticky p{color:var(--fg-2);font-size:1rem;line-height:1.7}
+.profile-sticky .id-card{margin-top:2rem;padding:1.5rem;background:var(--bg-3);border:1px solid var(--border);border-radius:10px;font-family:var(--mono);font-size:.78rem}
+.profile-sticky .id-card .row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px dashed var(--border)}
+.profile-sticky .id-card .row:last-child{border-bottom:none}
+.profile-sticky .id-card .key{color:var(--fg-3)}
+.profile-sticky .id-card .val{color:var(--accent)}
+.profile-content p{font-size:1.04rem;line-height:1.75;color:var(--fg-2);margin-bottom:1.5rem}
+.profile-content p strong{color:var(--fg);font-weight:600}
+.profile-content .lead{font-family:var(--display);font-size:1.5rem;line-height:1.4;color:var(--fg);font-weight:400;margin-bottom:2rem;letter-spacing:-.015em}
+.profile-content .lead em{color:var(--accent);font-style:normal;font-weight:500}
+.profile-quote{margin:3rem 0;padding:2rem;border-left:2px solid var(--accent);background:var(--bg-3);border-radius:0 10px 10px 0;position:relative}
+.profile-quote::before{content:'"';position:absolute;top:.5rem;left:1.5rem;font-family:var(--display);font-size:5rem;color:var(--accent);opacity:.2;line-height:1}
+.profile-quote p{font-family:var(--display);font-style:italic;font-size:1.15rem;color:var(--fg);margin-bottom:.5rem;position:relative;z-index:1}
+.profile-quote cite{font-family:var(--mono);font-size:.76rem;color:var(--fg-3);font-style:normal;text-transform:uppercase;letter-spacing:.1em}
+
+.services-section{background:var(--bg)}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.service-card{background:var(--bg);padding:2.3rem;position:relative;transition:all .4s;cursor:none;min-height:290px;display:flex;flex-direction:column}
+.service-card:hover{background:var(--bg-card)}
+.service-card:hover .service-icon{color:var(--accent);background:var(--pink-soft);border-color:var(--border-bright)}
+.service-card::after{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--accent);transition:width .4s}
+.service-card:hover::after{width:100%}
+.service-num{font-family:var(--mono);font-size:.7rem;color:var(--fg-3);margin-bottom:1.4rem;letter-spacing:.1em;text-transform:uppercase}
+.service-icon{width:44px;height:44px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--accent);margin-bottom:1.4rem;transition:all .3s}
+.service-title{font-family:var(--display);font-size:1.18rem;font-weight:600;margin-bottom:.7rem;letter-spacing:-.01em;color:var(--fg)}
+.service-desc{color:var(--fg-2);font-size:.92rem;line-height:1.65;flex-grow:1}
+.service-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.4rem}
+.service-tag{font-family:var(--mono);font-size:.65rem;color:var(--accent);padding:.22rem .55rem;background:var(--pink-soft);border:1px solid var(--border-bright);border-radius:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+
+.capabilities-section{background:var(--bg-2);border-top:1px solid var(--border);overflow:hidden}
+.marquee{margin:4rem 0;overflow:hidden;position:relative;padding:1.8rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.marquee-track{display:flex;gap:3rem;animation:scroll 45s linear infinite;white-space:nowrap;width:max-content}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.marquee-item{font-family:var(--display);font-size:2.2rem;font-weight:400;color:var(--fg-3);display:flex;align-items:center;gap:3rem}
+.marquee-item::after{content:'/';color:var(--accent);font-weight:300}
+.capabilities-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem}
+.capability{padding:1.8rem;border:1px solid var(--border);border-radius:10px;background:var(--bg);transition:all .3s;cursor:none;position:relative;overflow:hidden}
+.capability:hover{border-color:var(--accent);transform:translateY(-3px);background:var(--bg-card);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.capability-num{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.8rem;font-weight:500}
+.capability-title{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:.5rem;color:var(--fg);letter-spacing:-.005em}
+.capability-desc{color:var(--fg-2);font-size:.85rem;line-height:1.55}
+
+.portfolio-section{background:var(--bg)}
+.portfolio-projects{display:flex;flex-direction:column;gap:2.5rem}
+.project{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s}
+.project:hover{border-color:var(--border-bright)}
+.project-header{padding:2.8rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;border-bottom:1px solid var(--border);position:relative;background:linear-gradient(135deg,var(--bg-2) 0%,var(--bg-3) 100%)}
+.project-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
+.project-num{font-family:var(--mono);font-size:.72rem;color:var(--accent);margin-bottom:1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;gap:.6rem}
+.project-num .line{width:24px;height:1px;background:var(--accent)}
+.project-title{font-family:var(--display);font-size:clamp(1.7rem,3.2vw,2.3rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;margin-bottom:.6rem;color:var(--fg)}
+.project-tagline{font-family:var(--display);font-style:italic;font-size:1.05rem;color:var(--accent);margin-bottom:1.5rem;font-weight:400}
+.project-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
+.meta-chip{font-family:var(--mono);font-size:.66rem;color:var(--fg-2);padding:.28rem .7rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+.meta-chip.accent{background:var(--pink-soft);color:var(--accent);border-color:var(--border-bright)}
+.project-stats{display:flex;gap:1.3rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.project-stat{text-align:right;padding-left:1.3rem;border-left:1px solid var(--border)}
+.project-stat:first-child{border-left:none;padding-left:0}
+.project-stat-num{font-family:var(--display);font-size:1.5rem;font-weight:600;color:var(--accent);line-height:1}
+.project-stat-label{font-family:var(--mono);font-size:.62rem;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+
+.project-tabs{display:flex;gap:0;padding:0 2.8rem;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--bg-3)}
+.project-tabs::-webkit-scrollbar{display:none}
+.project-tab{padding:1.1rem 1.4rem;background:transparent;border:none;color:var(--fg-3);font-family:var(--mono);font-size:.78rem;font-weight:500;cursor:none;position:relative;transition:color .3s;white-space:nowrap;display:flex;align-items:center;gap:.5rem;text-transform:uppercase;letter-spacing:.08em}
+.project-tab:hover{color:var(--fg-2)}
+.project-tab.active{color:var(--accent)}
+.project-tab.active::after{content:'';position:absolute;bottom:-1px;left:1.4rem;right:1.4rem;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.project-content{padding:2.8rem;min-height:400px;background:var(--bg-2)}
+.tab-panel{display:none;animation:fadeIn .4s ease}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tab-panel h4{font-family:var(--display);font-size:1.4rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.015em;color:var(--fg)}
+.tab-panel p{color:var(--fg-2);font-size:1rem;line-height:1.7;margin-bottom:1.5rem;max-width:780px}
+.tab-panel > p:first-of-type{font-size:1.08rem;color:var(--fg-2)}
+
+.arch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
+.arch-item{padding:1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;transition:all .3s;position:relative;overflow:hidden}
+.arch-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--accent);transition:height .3s}
+.arch-item:hover::before{height:100%}
+.arch-item:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-card)}
+.arch-item-title{font-family:var(--display);font-size:1rem;font-weight:600;margin-bottom:.5rem;color:var(--fg);display:flex;align-items:center;gap:.6rem;letter-spacing:-.005em}
+.arch-item-title i{color:var(--accent);font-size:.85rem}
+.arch-item-desc{color:var(--fg-2);font-size:.87rem;line-height:1.55}
+
+.features-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
+.feature-item{padding:1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;transition:all .3s;position:relative;border-left:3px solid var(--accent)}
+.feature-item:hover{background:var(--bg-card);transform:translateX(3px);border-color:var(--border-bright);border-left-color:var(--accent)}
+.feature-title{font-family:var(--display);font-weight:600;color:var(--fg);margin-bottom:.4rem;font-size:.98rem;letter-spacing:-.005em}
+.feature-desc{color:var(--fg-2);font-size:.87rem;line-height:1.55}
+
+.roles-visual{margin-top:2rem;padding:1.8rem;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+.roles-visual h5{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:1.2rem;color:var(--fg);display:flex;align-items:center;gap:.6rem}
+.roles-visual h5 i{color:var(--accent);font-size:.85rem}
+.roles-display{display:flex;flex-wrap:wrap;gap:.5rem}
+.role-pill{padding:.45rem .9rem;background:var(--bg-3);border:1px solid var(--border-bright);border-radius:6px;font-family:var(--mono);font-size:.74rem;color:var(--accent);font-weight:500}
+.role-pill .role-desc{color:var(--fg-3);margin-left:.4rem;font-weight:400}
+
+.gallery-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;padding:1.2rem 1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+.gallery-hint{color:var(--fg-3);font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;gap:.6rem}
+.gallery-hint i{color:var(--accent)}
+.gallery-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.gallery-btn{padding:.55rem 1rem;background:var(--bg-3);border:1px dashed var(--border-bright);color:var(--accent);border-radius:6px;font-family:var(--mono);font-size:.76rem;font-weight:500;cursor:none;display:inline-flex;align-items:center;gap:.45rem;transition:all .3s;text-transform:uppercase;letter-spacing:.05em}
+.gallery-btn:hover{background:var(--pink-soft);border-style:solid;transform:translateY(-1px)}
+
+.note-composer{background:var(--bg);border:1px solid var(--border-bright);border-radius:10px;padding:1.2rem;margin-bottom:1.5rem;display:none}
+.note-composer.active{display:block;animation:fadeIn .3s}
+.note-composer textarea{width:100%;background:transparent;border:none;color:var(--fg);font-family:var(--sans);font-size:.95rem;resize:vertical;min-height:80px;outline:none;line-height:1.6}
+.note-composer textarea::placeholder{color:var(--fg-3)}
+.note-composer-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.6rem}
+.note-composer-btn{padding:.4rem .9rem;border:1px solid var(--border-bright);background:transparent;color:var(--fg-2);border-radius:6px;font-family:var(--mono);font-size:.76rem;cursor:none;transition:all .2s;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+.note-composer-btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.note-composer-btn:hover{background:var(--bg-3)}
+.note-composer-btn.primary:hover{background:var(--accent-2)}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.gallery-slot{aspect-ratio:16/10;background:var(--bg);border:1px dashed var(--border);border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:none;transition:all .3s}
+.gallery-slot:hover{border-color:var(--accent);background:var(--bg-3)}
+.gallery-slot.has-image{cursor:none}
+.gallery-slot img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-slot .upload-prompt{text-align:center;color:var(--fg-3);padding:1rem;pointer-events:none}
+.gallery-slot .upload-prompt i{font-size:1.5rem;color:var(--accent);margin-bottom:.6rem;display:block}
+.gallery-slot .upload-prompt span{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;display:block;color:var(--fg-2);font-weight:500}
+.gallery-slot .upload-prompt small{font-size:.68rem;color:var(--fg-3);display:block;margin-top:.3rem}
+.gallery-slot.dragover{border-color:var(--accent);background:var(--pink-soft);transform:scale(1.02)}
+.gallery-slot .remove-btn{position:absolute;top:.5rem;right:.5rem;width:26px;height:26px;background:rgba(11,25,87,.85);border:1px solid var(--border-bright);color:var(--fg);border-radius:6px;cursor:none;display:none;align-items:center;justify-content:center;font-size:.7rem;transition:all .2s;backdrop-filter:blur(4px)}
+.gallery-slot.has-image .remove-btn{display:flex}
+.gallery-slot .remove-btn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+.gallery-slot .caption{position:absolute;bottom:0;left:0;right:0;padding:.6rem .8rem;background:linear-gradient(0deg,rgba(11,25,87,.95),transparent);font-size:.74rem;color:var(--fg);font-family:var(--mono);opacity:0;transition:opacity .3s}
+.gallery-slot.has-image:hover .caption{opacity:1}
+
+.gallery-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:1.4rem;position:relative;animation:fadeIn .4s}
+.gallery-note .note-label{font-family:var(--mono);font-size:.66rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;font-weight:500}
+.gallery-note .note-text{color:var(--fg);font-size:.92rem;line-height:1.65;font-family:var(--sans)}
+.gallery-note .note-remove{position:absolute;top:1rem;right:1rem;background:var(--bg-3);border:1px solid var(--border);color:var(--fg-3);cursor:none;font-size:.75rem;width:24px;height:24px;border-radius:6px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.gallery-note .note-remove:hover{background:var(--accent-deep);color:var(--fg);border-color:var(--accent-deep)}
+
+.process-section{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.process-timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;position:relative;margin-top:3rem}
+.process-timeline::before{content:'';position:absolute;top:30px;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),var(--border-bright),transparent)}
+.process-step{text-align:center;position:relative}
+.process-step-num{width:60px;height:60px;background:var(--bg);border:1px solid var(--border-bright);border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;font-family:var(--display);font-size:1.2rem;color:var(--accent);position:relative;z-index:2;transition:all .3s;font-weight:600}
+.process-step:hover .process-step-num{background:var(--accent);color:var(--bg);transform:scale(1.08);box-shadow:0 8px 24px rgba(250,158,188,.3);border-color:var(--accent)}
+.process-step-title{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:.5rem;color:var(--fg);letter-spacing:-.005em}
+.process-step-desc{color:var(--fg-2);font-size:.83rem;line-height:1.55;padding:0 .5rem}
+
+.contact-section{background:var(--bg);position:relative;overflow:hidden}
+.contact-section::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,var(--pink-glow),transparent 70%);top:-200px;right:-200px;pointer-events:none}
+.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:5rem;align-items:center;position:relative;z-index:2}
+.contact-title{font-family:var(--display);font-size:clamp(2rem,4.5vw,3.2rem);font-weight:500;line-height:1.1;letter-spacing:-.025em;margin-bottom:1.4rem}
+.contact-title em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600}
+.contact-sub{color:var(--fg-2);font-size:1.02rem;margin-bottom:2.5rem;max-width:480px;line-height:1.7}
+.contact-info{display:flex;flex-direction:column;gap:.8rem}
+.contact-info-item{display:flex;align-items:center;gap:1rem;color:var(--fg);text-decoration:none;font-size:.95rem;transition:color .3s;font-family:var(--mono)}
+.contact-info-item:hover{color:var(--accent)}
+.contact-info-item i{width:38px;height:38px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--accent);transition:all .3s;font-size:.9rem}
+.contact-info-item:hover i{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.contact-form{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:2.3rem;position:relative;overflow:hidden}
+.contact-form::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-family:var(--mono);font-size:.7rem;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;font-weight:500}
+.form-group input,.form-group textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;color:var(--fg);font-family:var(--sans);font-size:.93rem;outline:none;transition:all .3s}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--fg-3)}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent);background:var(--bg-3);box-shadow:0 0 0 3px var(--pink-soft)}
+.form-group textarea{resize:vertical;min-height:100px}
+
+footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(--border);position:relative;z-index:2}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1400px;margin:0 auto 2.5rem}
+.footer-brand{font-family:var(--display);font-size:1.6rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.6rem}
+.footer-brand-desc{color:var(--fg-2);max-width:360px;line-height:1.65;font-size:.92rem}
+.footer-col h5{font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;font-weight:500}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.55rem}
+.footer-col a{color:var(--fg-2);text-decoration:none;font-size:.9rem;transition:color .3s;font-family:var(--mono)}
+.footer-col a:hover{color:var(--accent)}
+.footer-bottom{max-width:1400px;margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.74rem;color:var(--fg-3);flex-wrap:wrap;gap:1rem;text-transform:uppercase;letter-spacing:.08em}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elevated);border:1px solid var(--accent);color:var(--fg);padding:.85rem 1.4rem;border-radius:8px;font-size:.88rem;z-index:10000;opacity:0;transition:all .4s;display:flex;align-items:center;gap:.55rem;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-bright);font-family:var(--mono);font-weight:500}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast i{color:var(--accent)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:1024px){
+  .hero-content{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .profile-grid{grid-template-columns:1fr;gap:3rem}
+  .profile-sticky{position:static}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .capabilities-grid{grid-template-columns:repeat(2,1fr)}
+  .process-timeline{grid-template-columns:repeat(2,1fr);gap:2rem}
+  .process-timeline::before{display:none}
+  .contact-grid{grid-template-columns:1fr;gap:3rem}
+  .project-header{grid-template-columns:1fr}
+  .project-stats{justify-content:flex-start}
+  .arch-grid,.features-list{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  nav.scrolled{padding:.8rem 1.5rem}
+  .nav-links{display:none}
+  section{padding:5rem 1.5rem}
+  .hero{padding:7rem 1.5rem 4rem}
+  .hero-stats{margin-top:3rem;gap:1.2rem}
+  .stat-num{font-size:1.4rem}
+  .services-grid{grid-template-columns:1fr}
+  .capabilities-grid{grid-template-columns:1fr}
+  .process-timeline{grid-template-columns:1fr}
+  .project-header{padding:2rem}
+  .project-tabs{padding:0 1.5rem}
+  .project-content{padding:2rem 1.5rem}
+  .footer-grid{grid-template-columns:1fr;gap:2rem}
+  .footer-bottom{flex-direction:column;gap:1rem;text-align:center}
+  .marquee-item{font-size:1.7rem}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav id="nav">
+  <a href="#top" class="logo"><span class="logo-mark">L</span>LuluLab</a>
+  <ul class="nav-links">
+    <li><a href="#profile">studio</a></li>
+    <li><a href="#services">services</a></li>
+    <li><a href="#capabilities">stack</a></li>
+    <li><a href="#portfolio">portfolio</a></li>
+    <li><a href="#process">process</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Start a Project <i class="fas fa-arrow-right"></i></a>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="hero-grid-deco"></div>
+    <div class="mesh mesh-1"></div>
+    <div class="mesh mesh-2"></div>
+    <div class="mesh mesh-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><span class="dot"></span>Custom Web Application Studio</div>
+      <h1>Software,<br><span class="accent">engineered</span><br><span class="display">for your business.</span></h1>
+      <p class="hero-sub">LuluLab designs and builds custom web applications from a blank page — no templates, no frameworks chasing trends. Just purpose-built software, written line by line, in direct collaboration with the people who will use it.</p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn-primary">View Our Work <i class="fas fa-arrow-right"></i></a>
+        <a href="#contact" class="btn-secondary"><i class="far fa-envelope"></i>Start a Brief</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">build.js — lululab.studio</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-line"><span class="prompt">$</span> <span class="comment">// building from scratch</span></div>
+        <div class="terminal-line"><span class="keyword">const</span> app = <span class="function">build</span>({</div>
+        <div class="terminal-line">  framework: <span class="string">'none'</span>,</div>
+        <div class="terminal-line">  templates: <span class="string">'none'</span>,</div>
+        <div class="terminal-line">  database: <span class="string">'supabase'</span>,</div>
+        <div class="terminal-line">  realtime: <span class="keyword">true</span>,</div>
+        <div class="terminal-line">  tailored: <span class="keyword">true</span></div>
+        <div class="terminal-line">});</div>
+        <div class="terminal-line"><span class="output">→ 0 templates used</span></div>
+        <div class="terminal-line"><span class="output">→ 1 satisfied client</span></div>
+        <div class="terminal-line"><span class="ok">→ deployed ✓</span></div>
+        <div class="terminal-line"><span class="prompt">$</span> <span class="cursor-blink"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num" data-target="2">0</span><span class="stat-label">Production Apps</span></div>
+    <div class="stat"><span class="stat-num" data-target="135">0</span><span class="plus">+</span><span class="stat-label">Functions Shipped</span></div>
+    <div class="stat"><span class="stat-num" data-target="4580">0</span><span class="plus">+</span><span class="stat-label">Lines of Code</span></div>
+    <div class="stat"><span class="stat-num" data-target="15">0</span><span class="plus">+</span><span class="stat-label">Database Tables</span></div>
+    <div class="scroll-hint"><span>Scroll</span><i class="fas fa-arrow-down"></i></div>
+  </div>
+</section>
+
+<section class="profile-section" id="profile">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow"><span class="line"></span><span class="num">01</span>Studio Profile</div>
+      <h2 class="section-title">A studio built on <span class="accent">first principles</span>, not borrowed templates.</h2>
+    </div>
+    <div class="profile-grid">
+      <div class="profile-sticky reveal">
+        <h3>Who we are</h3>
+        <p>LuluLab is a custom web application studio. We build software the long way — from a blank canvas to a deployed product — for businesses whose workflows don't fit inside off-the-shelf tools.</p>
+        <div class="id-card">
+          <div class="row"><span class="key">studio</span><span class="val">LuluLab</span></div>
+          <div class="row"><span class="key">founded</span><span class="val">2024</span></div>
+          <div class="row"><span class="key">focus</span><span class="val">bespoke apps</span></div>
+          <div class="row"><span class="key">stack</span><span class="val">vanilla js</span></div>
+          <div class="row"><span class="key">deploy</span><span class="val">single-file</span></div>
+          <div class="row"><span class="key">templates</span><span class="val">0</span></div>
+        </div>
+      </div>
+      <div class="profile-content reveal">
+        <p class="lead">Every project we take on starts with a single question — <em>"What does your business actually need?"</em> — and ends with software written specifically to answer it.</p>
+        <p><strong>No templates. No recycled themes. No frameworks chasing trends.</strong> Just purpose-built applications, engineered end-to-end in direct collaboration with the people who will use them every day.</p>
+        <p>Our work lives at the intersection of product thinking, relational database design, and interface craft. We don't ship CRUD demos — we model real workflows: leave management systems with multi-role permissions, payroll engines with audit trails, billing systems with real-time collaboration, performance scoreboards with dispute resolution baked in.</p>
+        <p>Each engagement is treated as an ongoing partnership rather than a one-off deliverable. Features evolve through dozens of iterations shaped by the people actually using the software. The result is applications that fit the business — not the other way around.</p>
+        <div class="profile-quote">
+          <p>If your problem can be solved by an existing product, we'll tell you. If it can't, we'll build the solution.</p>
+          <cite>— LuluLab operating principle</cite>
+        </div>
+        <p><strong>What we don't do:</strong> WordPress themes, Shopify tweaks, template customization, or framework-of-the-week experiments. We focus exclusively on bespoke business applications where the requirements demand a custom build.</p>
+        <p><strong>What we do:</strong> sit down with the team, map the actual workflow, design the data model and permission structure, prototype the interface, and ship — then iterate, round after round, until the software disappears into the work it was built to support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services-section" id="services">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow"><span class="line"></span><span class="num">02</span>What We Do</div>
+      <h2 class="section-title">Eight capabilities, <span class="accent">one studio</span>.</h2>
+      <p class="section-sub">A focused service offering covering the full lifecycle of a custom business application — from first conversation to ongoing evolution.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-num">01 / Service</div>
+        <div class="service-icon"><i class="fas fa-code"></i></div>
+        <div class="service-title">Custom Web Application Development</div>
+        <div class="service-desc">Bespoke applications built from scratch in vanilla JavaScript — no frameworks, no build steps, no templates. Every line of code is written for your specific use case and remains entirely yours.</div>
+        <div class="service-tags"><span class="service-tag">Vanilla JS</span><span class="service-tag">Single-File</span><span class="service-tag">SPA</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02 / Service</div>
+        <div class="service-icon"><i class="fas fa-diagram-project"></i></div>
+        <div class="service-title">Business Process Digitization</div>
+        <div class="service-desc">We take manual, spreadsheet-driven, or paper-based workflows and turn them into live, multi-user systems. Leave management, payroll, billing, performance tracking, task assignment — modeled after how your team actually works.</div>
+        <div class="service-tags"><span class="service-tag">Workflow</span><span class="service-tag">Audit Trail</span><span class="service-tag">Real Ops</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03 / Service</div>
+        <div class="service-icon"><i class="fas fa-bolt"></i></div>
+        <div class="service-title">Real-Time Data Systems</div>
+        <div class="service-desc">WebSocket-powered live sync across every connected device. Changes from one user appear instantly for everyone else — no polling, no refreshes, no stale data. Built on Supabase Realtime subscriptions.</div>
+        <div class="service-tags"><span class="service-tag">WebSocket</span><span class="service-tag">Live Sync</span><span class="service-tag">Multi-User</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04 / Service</div>
+        <div class="service-icon"><i class="fas fa-shield-halved"></i></div>
+        <div class="service-title">Role-Based Access Engineering</div>
+        <div class="service-desc">Genuine multi-role permission systems — not simple admin/user toggles. Five-role architectures, dual-role support, named super-user exceptions, and per-row permission checks enforced at both the interface and database layers.</div>
+        <div class="service-tags"><span class="service-tag">RBAC</span><span class="service-tag">Per-Row</span><span class="service-tag">Multi-Role</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05 / Service</div>
+        <div class="service-icon"><i class="fas fa-database"></i></div>
+        <div class="service-title">Cloud-Native Backends</div>
+        <div class="service-desc">Production-grade PostgreSQL database design via Supabase — proper relational schemas, upsert patterns, paginated reads, race condition handling, and per-table targeted re-fetches for minimal egress.</div>
+        <div class="service-tags"><span class="service-tag">PostgreSQL</span><span class="service-tag">Supabase</span><span class="service-tag">Scalable</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06 / Service</div>
+        <div class="service-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+        <div class="service-title">Single-File, Zero-DevOps Deployment</div>
+        <div class="service-desc">Entire applications deployed as a single portable HTML file — trivial to host, version, and hand off. No servers to maintain, no DevOps overhead, no monthly infrastructure costs beyond the database itself.</div>
+        <div class="service-tags"><span class="service-tag">Zero-DevOps</span><span class="service-tag">Portable</span><span class="service-tag">Low-Cost</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">07 / Service</div>
+        <div class="service-icon"><i class="fas fa-palette"></i></div>
+        <div class="service-title">UI / UX & Visual Identity</div>
+        <div class="service-desc">Fully custom visual systems — colors and typography matched to your brand guidelines, purpose-built status colors, responsive interaction patterns, and layouts engineered for clarity during long working sessions.</div>
+        <div class="service-tags"><span class="service-tag">Bespoke UI</span><span class="service-tag">Brand-Matched</span><span class="service-tag">Accessible</span></div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">08 / Service</div>
+        <div class="service-icon"><i class="fas fa-arrows-rotate"></i></div>
+        <div class="service-title">Iterative Partnership</div>
+        <div class="service-desc">Software that evolves with your business. We work in feature rounds shaped by the people using the software, shipping dozens of iterations over an engagement rather than vanishing after launch.</div>
+        <div class="service-tags"><span class="service-tag">Ongoing</span><span class="service-tag">Feature Rounds</span><span class="service-tag">Partnership</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="capabilities-section" id="capabilities">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow"><span class="line"></span><span class="num">03</span>Capabilities</div>
+      <h2 class="section-title">The stack we <span class="accent">actually</span> master.</h2>
+      <p class="section-sub">A deliberately small, deeply understood toolkit. We'd rather know eight things completely than thirty things superficially.</p>
+    </div>
+  </div>
+  <div class="marquee reveal">
+    <div class="marquee-track">
+      <span class="marquee-item">Vanilla JavaScript</span>
+      <span class="marquee-item">Supabase</span>
+      <span class="marquee-item">PostgreSQL</span>
+      <span class="marquee-item">Realtime WebSocket</span>
+      <span class="marquee-item">HTML5</span>
+      <span class="marquee-item">CSS3</span>
+      <span class="marquee-item">GitHub Pages</span>
+      <span class="marquee-item">Hash Routing</span>
+      <span class="marquee-item">Cloud Storage</span>
+      <span class="marquee-item">Vanilla JavaScript</span>
+      <span class="marquee-item">Supabase</span>
+      <span class="marquee-item">PostgreSQL</span>
+      <span class="marquee-item">Realtime WebSocket</span>
+      <span class="marquee-item">HTML5</span>
+      <span class="marquee-item">CSS3</span>
+      <span class="marquee-item">GitHub Pages</span>
+      <span class="marquee-item">Hash Routing</span>
+      <span class="marquee-item">Cloud Storage</span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="capabilities-grid reveal">
+      <div class="capability">
+        <div class="capability-num">CAP / 01</div>
+        <div class="capability-title">Relational Database Design</div>
+        <div class="capability-desc">Proper schema design across 15+ interconnected tables — leave balances, performance entries, QA disputes, billing rates — with upsert patterns and race condition handling.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 02</div>
+        <div class="capability-title">Real-Time Architecture</div>
+        <div class="capability-desc">WebSocket subscriptions per table, scroll-position-preserving re-renders, auto-reconnect with backoff, and fallback polling for networks that block WebSockets.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 03</div>
+        <div class="capability-title">Permission Engineering</div>
+        <div class="capability-desc">Five-role access systems, dual-role accounts, named super-user exceptions, and per-row permission checks enforced at both UI and database layers.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 04</div>
+        <div class="capability-title">Cloud File Storage</div>
+        <div class="capability-desc">Genuine image uploads via Supabase Storage — drag-and-drop, clipboard-paste support, attached to disputes, evidence records, and team-fund QR codes.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 05</div>
+        <div class="capability-title">Audit-Safe Workflows</div>
+        <div class="capability-desc">Full audit trails with images, three-way dispute resolution, correction request routing, time-gated emergency unlocks, and explicit "no call-out" confirmations.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 06</div>
+        <div class="capability-title">Egress Optimization</div>
+        <div class="capability-desc">Targeted re-fetches on WebSocket change events reduce database reads by ~90% compared to polling architectures — only the affected table is re-fetched.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 07</div>
+        <div class="capability-title">Custom UI Engineering</div>
+        <div class="capability-desc">Searchable dropdowns with keyboard navigation, layout-stable modals, persistent sessions, staged loading, print-optimized reports, and toast feedback systems.</div>
+      </div>
+      <div class="capability">
+        <div class="capability-num">CAP / 08</div>
+        <div class="capability-title">Production Deployment</div>
+        <div class="capability-desc">Single-file architecture deployed via GitHub Pages with zero DevOps. Version-aware refresh prompts keep every user on the latest version without manual cache-clearing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio-section" id="portfolio">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow"><span class="line"></span><span class="num">04</span>Selected Work</div>
+      <h2 class="section-title">Two production apps. <span class="accent">Zero templates.</span></h2>
+      <p class="section-sub">Each project below is a real, deployed business application — built from scratch, in collaboration with the client, and currently in daily use. Click through the tabs to explore the architecture, modules, and gallery of each.</p>
+    </div>
+
+    <div class="portfolio-projects">
+      <div class="project reveal" data-project="1">
+        <div class="project-header">
+          <div>
+            <div class="project-num"><span class="line"></span>PROJECT 01 / OPERATIONS</div>
+            <h3 class="project-title">DRS Leave Tracker Hub</h3>
+            <div class="project-tagline">A full operations command center for a 30+ person Philippine-based team.</div>
+            <p style="color:var(--fg-2);max-width:680px;margin-bottom:1rem;">A full-featured, single-file web application covering leave management, individual performance scoring, payroll confirmation, priority task tracking, team funds, and more — all backed by a live Supabase database with real-time sync across every connected device.</p>
+            <div class="project-meta">
+              <span class="meta-chip accent">Vanilla JS</span>
+              <span class="meta-chip accent">Supabase</span>
+              <span class="meta-chip">PostgreSQL</span>
+              <span class="meta-chip">Realtime WebSocket</span>
+              <span class="meta-chip">Single-File Deployment</span>
+              <span class="meta-chip">Cloud Storage</span>
+            </div>
+          </div>
+          <div class="project-stats">
+            <div class="project-stat"><div class="project-stat-num">5</div><div class="project-stat-label">Roles</div></div>
+            <div class="project-stat"><div class="project-stat-num">15+</div><div class="project-stat-label">DB Tables</div></div>
+            <div class="project-stat"><div class="project-stat-num">8+</div><div class="project-stat-label">Modules</div></div>
+            <div class="project-stat"><div class="project-stat-num">30+</div><div class="project-stat-label">Daily Users</div></div>
+          </div>
+        </div>
+
+        <div class="project-tabs">
+          <button class="project-tab active" data-tab="overview"><i class="fas fa-circle-info"></i>Overview</button>
+          <button class="project-tab" data-tab="architecture"><i class="fas fa-cubes"></i>Architecture</button>
+          <button class="project-tab" data-tab="modules"><i class="fas fa-layer-group"></i>Modules</button>
+          <button class="project-tab" data-tab="gallery"><i class="fas fa-images"></i>Gallery</button>
+        </div>
+
+        <div class="project-content">
+          <div class="tab-panel active" data-tab="overview">
+            <h4>Built for a real operations team — not a demo.</h4>
+            <p>This application was built entirely in HTML, CSS, and vanilla JavaScript with a Supabase (PostgreSQL) backend — no framework, no build step, deployed as a single portable file. It demonstrates end-to-end product thinking: multi-role permission systems, live data sync, file storage integration, audit-safe workflows, and a fully custom-designed interface.</p>
+            <p>The system covers leave management, individual performance scoring, payroll confirmation, priority task tracking, team funds, and more — every module backed by a live Supabase database with real-time sync across every connected device. Changes made by one person appear instantly for everyone else logged in, with no page refresh required.</p>
+            <p>Developed iteratively over dozens of feature rounds in direct collaboration with the end client, the project reflects hands-on experience across the full stack: relational database design, real-time architecture, role-based access control, cloud file storage, and a polished, purpose-built interface.</p>
+            <div class="roles-visual">
+              <h5><i class="fas fa-user-shield"></i>Five distinct roles, each scoped to exactly the features they need:</h5>
+              <div class="roles-display">
+                <span class="role-pill">Staff <span class="role-desc">— daily entries, leave requests</span></span>
+                <span class="role-pill">Admin <span class="role-desc">— full roster & approval control</span></span>
+                <span class="role-pill">Treasurer <span class="role-desc">— team funds management</span></span>
+                <span class="role-pill">IPS <span class="role-desc">— performance scoring</span></span>
+                <span class="role-pill">QA <span class="role-desc">— incident tracking & disputes</span></span>
+              </div>
+              <p style="margin-top:1rem;font-size:.87rem;color:var(--fg-3);">Dual-role support allows any account to hold a primary role plus an optional second role (e.g. a Treasurer who is also QA) without needing a separate account. Named super-user exceptions layer additional control on top of the role system.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab="architecture">
+            <h4>Single-file deployment, live backend.</h4>
+            <p>The entire application — interface, logic, and styling — lives in one portable HTML file, making it trivially easy to host, version, and hand off. The backend is powered by Supabase (PostgreSQL + real-time subscriptions + file storage), so changes made by one person appear instantly for everyone else logged in.</p>
+            <div class="arch-grid">
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-file-code"></i>Single-File Deployment</div><div class="arch-item-desc">The entire application — interface, logic, and styling — lives in one portable HTML file. Trivial to host, version, and hand off.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-database"></i>Live Supabase Backend</div><div class="arch-item-desc">PostgreSQL + real-time subscriptions + file storage power every module, so changes appear instantly across all connected devices.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-arrows-rotate"></i>Real-Time Sync (15+ Tables)</div><div class="arch-item-desc">Leave requests, performance entries, QA disputes, notifications, and more all update live via dedicated WebSocket channels.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-cloud-arrow-up"></i>Cloud File Storage</div><div class="arch-item-desc">Genuine image uploads via Supabase Storage with drag-and-drop and clipboard-paste support — not just image links.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-link"></i>URL-Aware Navigation</div><div class="arch-item-desc">Each major section has its own shareable, bookmarkable link via hash-based routing. Back/forward browser navigation works correctly.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-rotate"></i>Version-Aware Refresh</div><div class="arch-item-desc">Background checks for new deployments prompt a refresh, keeping every user on the latest version without manual cache-clearing.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-shield-halved"></i>Per-Row Permission Checks</div><div class="arch-item-desc">Not just "can you see this page" but "can you edit this specific record" — enforced both in the interface and re-verified at the database layer.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-fingerprint"></i>Named Super-User Exceptions</div><div class="arch-item-desc">Specific high-trust actions like final dispute resolution are restricted to two named administrators, layered on top of the role system.</div></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab="modules">
+            <h4>Eight modules, one cohesive system.</h4>
+            <p>Each module below is a full sub-system with its own workflows, permissions, and real-time data flow — not a CRUD table with a form attached.</p>
+            <div class="features-list">
+              <div class="feature-item"><div class="feature-title">Leave Tracker</div><div class="feature-desc">Full lifecycle (request, approve, reject, cancel) for Vacation, Sick, Emergency leave with half-day and hourly increments. Automatic VL/SL balance management with sick-to-vacation spillover, LWOP detection, interactive color-coded calendar, and live admin approval queue.</div></div>
+              <div class="feature-item"><div class="feature-title">IPS — Individual Performance Score</div><div class="feature-desc">Weighted scoring (QA Accuracy 50%, Productivity 30%, Error Correction 20%), leave-aware targets, structured QA incident tracking, employee dispute workflow, three-way resolution (Approve / Reject / Reject-Count-as-Minor), full audit trail with images, year-at-a-glance view, downloadable reports.</div></div>
+              <div class="feature-item"><div class="feature-title">PrioList & Red Files</div><div class="feature-desc">Daily priority list that auto-resets at a fixed time. Red Files claim system with one-active-claim-at-a-time enforcement prevents two people from working the same flagged file simultaneously. Admin-controlled visibility toggle.</div></div>
+              <div class="feature-item"><div class="feature-title">Payroll Confirmation</div><div class="feature-desc">A structured sign-off workflow for payroll periods, integrated with leave balances and OT filing for clean period closeouts.</div></div>
+              <div class="feature-item"><div class="feature-title">OT Hours Filing</div><div class="feature-desc">Overtime request submission with an amendment flow (correcting actual hours without un-confirming an entry) and admin-only deletion controls.</div></div>
+              <div class="feature-item"><div class="feature-title">Team Funds</div><div class="feature-desc">Shared account tracking with QR code upload support for payment collection, including drag-and-drop and paste image upload.</div></div>
+              <div class="feature-item"><div class="feature-title">Employee Management</div><div class="feature-desc">Centralized roster control restricted to named administrators — account creation, role assignment, starting leave balances, and full lifecycle management.</div></div>
+              <div class="feature-item"><div class="feature-title">Notifications & Live Alerts</div><div class="feature-desc">Personal "My Alerts" bubble, role-aware notification bells (Leave, Team Funds, OT, IPS), one-click deep links to specific records, and browser-tab badge counts.</div></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab="gallery">
+            <div class="gallery-toolbar">
+              <div class="gallery-hint"><i class="fas fa-circle-info"></i>Click any slot to upload a screenshot, or drag-and-drop. Add notes to annotate.</div>
+              <div class="gallery-actions">
+                <button class="gallery-btn add-image-btn"><i class="fas fa-plus"></i>Add Image Slot</button>
+                <button class="gallery-btn add-note-btn"><i class="fas fa-pen"></i>Add Text Note</button>
+              </div>
+            </div>
+            <div class="note-composer">
+              <textarea placeholder="Write a note about this project — a feature highlight, a technical decision, a result..."></textarea>
+              <div class="note-composer-actions">
+                <button class="note-composer-btn cancel">Cancel</button>
+                <button class="note-composer-btn primary save">Save Note</button>
+              </div>
+            </div>
+            <div class="gallery-grid">
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project reveal" data-project="2">
+        <div class="project-header">
+          <div>
+            <div class="project-num"><span class="line"></span>PROJECT 02 / PAYROLL & BILLING</div>
+            <h3 class="project-title">Dream Rental Solutions — Invoice & Payroll System</h3>
+            <div class="project-tagline">A production-grade payroll and invoicing platform for a real short-term rental business.</div>
+            <p style="color:var(--fg-2);max-width:680px;margin-bottom:1rem;">A fully custom, production-grade payroll and invoicing management system built as a single-file HTML application deployed via GitHub Pages, backed by a live Supabase (PostgreSQL) cloud database. Replaces manual spreadsheets with a secure, real-time, multi-user platform — with zero server maintenance cost.</p>
+            <div class="project-meta">
+              <span class="meta-chip accent">Vanilla JS</span>
+              <span class="meta-chip accent">Supabase</span>
+              <span class="meta-chip">GitHub Pages</span>
+              <span class="meta-chip">Realtime WebSocket</span>
+              <span class="meta-chip">CSS Custom Properties</span>
+              <span class="meta-chip">Production</span>
+            </div>
+          </div>
+          <div class="project-stats">
+            <div class="project-stat"><div class="project-stat-num">4,580</div><div class="project-stat-label">Lines of Code</div></div>
+            <div class="project-stat"><div class="project-stat-num">135+</div><div class="project-stat-label">Functions</div></div>
+            <div class="project-stat"><div class="project-stat-num">5</div><div class="project-stat-label">DB Tables</div></div>
+            <div class="project-stat"><div class="project-stat-num">130+</div><div class="project-stat-label">Properties</div></div>
+          </div>
+        </div>
+
+        <div class="project-tabs">
+          <button class="project-tab active" data-tab="overview"><i class="fas fa-circle-info"></i>Overview</button>
+          <button class="project-tab" data-tab="architecture"><i class="fas fa-cubes"></i>Architecture</button>
+          <button class="project-tab" data-tab="modules"><i class="fas fa-layer-group"></i>Features</button>
+          <button class="project-tab" data-tab="gallery"><i class="fas fa-images"></i>Gallery</button>
+        </div>
+
+        <div class="project-content">
+          <div class="tab-panel active" data-tab="overview">
+            <h4>Real business logic — not a CRUD demo.</h4>
+            <p>Designed for a real short-term rental property management business, this system replaces manual spreadsheets with a secure, real-time, multi-user platform that handles employee payroll tracking, client billing, and operational data management — all with zero server maintenance cost.</p>
+            <p>The application is built entirely in vanilla JavaScript without React, Vue, or any UI library, demonstrating deep language fundamentals. It's a production-grade database design — proper use of upsert/dedup patterns, paginated reads, WebSocket subscriptions, and race condition handling. It models actual payroll workflows, billing groupings, and multi-user audit trails.</p>
+            <p>Deployed and live — not a local prototype — running in production for a real business on GitHub Pages with a cloud database backend. Both users see each other's changes appear instantly, with no page refresh needed, and the system intelligently re-fetches only the affected table on any change event.</p>
+            <div class="roles-visual">
+              <h5><i class="fas fa-user-shield"></i>Two-user system with surgically scoped permissions:</h5>
+              <div class="roles-display">
+                <span class="role-pill">Admin (Jeinna) <span class="role-desc">— full access, all 6 tabs</span></span>
+                <span class="role-pill">Limited (Greg) <span class="role-desc">— locked to Payroll tab only</span></span>
+              </div>
+              <p style="margin-top:1rem;font-size:.87rem;color:var(--fg-3);">Greg can log new work entries and edit additional rate / notes fields, but cannot touch Summary, Database, or Billing records. Every action Greg performs is logged with a timestamp and visible to the admin via a bell icon — and only the specific field he changed turns bright yellow, never the whole row.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab="architecture">
+            <h4>~90% fewer database reads than polling.</h4>
+            <p>Built on Supabase Realtime WebSocket subscriptions rather than polling, the system re-fetches only the affected table on any change event — not all tables. This minimises egress significantly while keeping every view live.</p>
+            <div class="arch-grid">
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-file-code"></i>Single-File SPA</div><div class="arch-item-desc">No build tools or frameworks. The entire application ships as one HTML file with vanilla JS and CSS custom properties.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-bolt"></i>Realtime WebSocket</div><div class="arch-item-desc">Push-based change notifications on every subscribed table — no polling. Auto-reconnects with 5-second backoff; falls back to 10-second polling if WebSocket unavailable.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-key"></i>Session-Based Auth</div><div class="arch-item-desc">Role-aware authentication with 1-hour inactivity timeout and sessionStorage persistence. Users land back on the exact tab they were on after a refresh.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-list-ol"></i>Paginated REST Fetches</div><div class="arch-item-desc">HTTP Range headers bypass Supabase's hard 1,000-row API cap — supports unlimited historical data with seed fingerprint-based deduplication.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-cloud"></i>GitHub Pages Deployment</div><div class="arch-item-desc">Drag-and-drop deploy with zero DevOps overhead. The application runs in production on free static hosting backed by a cloud database.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-gauge-high"></i>Egress Optimization</div><div class="arch-item-desc">Targeted re-fetches on WebSocket events: idle = zero requests, entry saved = entries table only. ~90% fewer reads than the previous polling architecture.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-arrows-up-down"></i>Scroll Position Preservation</div><div class="arch-item-desc">Double-requestAnimationFrame restore eliminates the scroll-jump issue common with innerHTML replacement. overflow-anchor: none prevents browser scroll-anchoring interference.</div></div>
+              <div class="arch-item"><div class="arch-item-title"><i class="fas fa-eraser"></i>Fresh-State Logout</div><div class="arch-item-desc">Every field, filter, report, and cached state is wiped clean on sign-out so the next session always starts blank — no leftover data from the previous user.</div></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab="modules">
+            <h4>Six functional sections, one cohesive platform.</h4>
+            <p>Each tab below is a complete workspace — with its own filters, inline editing rules, export options, and real-time data flow.</p>
+            <div class="features-list">
+              <div class="feature-item"><div class="feature-title">Dashboard</div><div class="feature-desc">4 live stat cards (current month payroll, all-time payroll, active cleaner count, properties in database), recent entries table, top earners panel. Entries touched by the limited user are highlighted in yellow for admin visibility.</div></div>
+              <div class="feature-item"><div class="feature-title">Log Work Entry</div><div class="feature-desc">Structured form with auto-populating cleaner dropdown, property dropdown narrowed dynamically to the selected cleaner, and rate auto-fill from the database. Three work types: Cleaning, Inspection, Misc/Bonus. Form state preserved across tab switches.</div></div>
+              <div class="feature-item"><div class="feature-title">Sorted Summary</div><div class="feature-desc">Complete payroll record with 4 live filters (From Date, To Date, Cleaner, Property). Admin inline editing: date picker, rate override, additional rate, notes, delete. Greg's edits highlighted field-by-field in yellow. CSV export.</div></div>
+              <div class="feature-item"><div class="feature-title">Employee Payroll Report</div><div class="feature-desc">Per-cleaner pay-statement cards with active staff sidebar. Admin inline editing with confirmation dialogs. Manual pay row button for bonuses/adjustments. Bidirectional sync with Summary tab. Print/PDF and CSV export.</div></div>
+              <div class="feature-item"><div class="feature-title">Billing System</div><div class="feature-desc">Generates client-facing invoices grouped by property brand (Dream, Thomas, Dwellish, Lotus, Kinga, etc.). Misc items panel per group, running subtotals that update live, grand total card. CSV export includes billing table and all misc line items.</div></div>
+              <div class="feature-item"><div class="feature-title">Database Editor (Admin Only)</div><div class="feature-desc">Employee Rates, Billing Rates, and Add New tabs — view, filter, edit, delete, and add rate records, employees, and billing properties. Duplicate detection warns instead of silently creating a second copy.</div></div>
+              <div class="feature-item"><div class="feature-title">Floating Chat (Messaging)</div><div class="feature-desc">Private chat between users accessible from any tab via a floating bubble. Unread count badge, messages grouped by sender with timestamps, messages persist permanently in Supabase. Realtime-powered, no polling.</div></div>
+              <div class="feature-item"><div class="feature-title">Activity Log & Change Tracking</div><div class="feature-desc">Admin-only bell icon with unread badge. Logs every action by the limited user — new entries, rate overrides, deletions, manual pay rows. Mark All Read / Clear Log. Capped at 500 entries. Yellow highlight on edited fields only.</div></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab="gallery">
+            <div class="gallery-toolbar">
+              <div class="gallery-hint"><i class="fas fa-circle-info"></i>Click any slot to upload a screenshot, or drag-and-drop. Add notes to annotate.</div>
+              <div class="gallery-actions">
+                <button class="gallery-btn add-image-btn"><i class="fas fa-plus"></i>Add Image Slot</button>
+                <button class="gallery-btn add-note-btn"><i class="fas fa-pen"></i>Add Text Note</button>
+              </div>
+            </div>
+            <div class="note-composer">
+              <textarea placeholder="Write a note about this project — a feature highlight, a technical decision, a result..."></textarea>
+              <div class="note-composer-actions">
+                <button class="note-composer-btn cancel">Cancel</button>
+                <button class="note-composer-btn primary save">Save Note</button>
+              </div>
+            </div>
+            <div class="gallery-grid">
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+              <label class="gallery-slot"><input type="file" accept="image/*" hidden><div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div><img alt=""><button class="remove-btn" type="button"><i class="fas fa-times"></i></button></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process-section" id="process">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow"><span class="line"></span><span class="num">05</span>How We Work</div>
+      <h2 class="section-title">From blank page to <span class="accent">daily use</span>.</h2>
+      <p class="section-sub">A five-stage engagement model designed to keep the people who'll actually use the software at the center of every decision.</p>
+    </div>
+    <div class="process-timeline reveal">
+      <div class="process-step"><div class="process-step-num">01</div><div class="process-step-title">Discovery</div><div class="process-step-desc">We sit down with your team, watch the actual workflow, and map every step — including the ones that currently live in spreadsheets and group chats.</div></div>
+      <div class="process-step"><div class="process-step-num">02</div><div class="process-step-title">Architecture</div><div class="process-step-desc">We design the data model, permission structure, and module breakdown. The schema is the contract — get it right and everything else follows.</div></div>
+      <div class="process-step"><div class="process-step-num">03</div><div class="process-step-title">Build</div><div class="process-step-desc">Single-file vanilla JS, no build step. You see working software early — not mockups, not prototypes, actual working features.</div></div>
+      <div class="process-step"><div class="process-step-num">04</div><div class="process-step-title">Iterate</div><div class="process-step-desc">Feature rounds shaped by real usage. Your team uses the software, tells us what's missing, and we ship the next round. Dozens of cycles over the engagement.</div></div>
+      <div class="process-step"><div class="process-step-num">05</div><div class="process-step-title">Evolve</div><div class="process-step-desc">The software stays in daily use and keeps evolving with the business. New modules, new roles, new workflows — added as your needs grow.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="section-eyebrow"><span class="line"></span><span class="num">06</span>Start a Project</div>
+        <h2 class="contact-title">Got a workflow that <em>doesn't fit</em> a template?</h2>
+        <p class="contact-sub">Tell us what your team is doing by hand — spreadsheets, group chats, paper forms, workarounds. We'll tell you honestly whether it's worth building custom, and if it is, what it would take.</p>
+        <div class="contact-info">
+          <a href="mailto:hello@lululab.studio" class="contact-info-item"><i class="far fa-envelope"></i><span>hello@lululab.studio</span></a>
+          <a href="#" class="contact-info-item"><i class="fab fa-github"></i><span>github.com/lululab-ctrl</span></a>
+          <a href="#" class="contact-info-item"><i class="fas fa-clock"></i><span>Response within 24 hours</span></a>
+        </div>
+      </div>
+      <form class="contact-form reveal">
+        <div class="form-group"><label>Your Name</label><input type="text" required placeholder="Jane Reyes"></div>
+        <div class="form-group"><label>Email</label><input type="email" required placeholder="jane@company.com"></div>
+        <div class="form-group"><label>Company</label><input type="text" placeholder="Acme Operations Inc."></div>
+        <div class="form-group"><label>What are you trying to solve?</label><textarea required placeholder="Briefly describe the workflow, the team size, and what's currently broken or manual..."></textarea></div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Send Project Brief <i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><span class="logo-mark">L</span>LuluLab</div>
+      <p class="footer-brand-desc">A custom web application studio building bespoke business software from scratch — no templates, no frameworks, no recycled themes. Just purpose-built applications, written line by line.</p>
+    </div>
+    <div class="footer-col"><h5>Studio</h5><ul><li><a href="#profile">about</a></li><li><a href="#services">services</a></li><li><a href="#capabilities">capabilities</a></li><li><a href="#process">process</a></li></ul></div>
+    <div class="footer-col"><h5>Work</h5><ul><li><a href="#portfolio">portfolio</a></li><li><a href="#contact">start a project</a></li><li><a href="mailto:hello@lululab.studio">email us</a></li><li><a href="#">github</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 LuluLab — Built from scratch, by hand</span>
+    <span>Vanilla JS · Supabase · Zero Templates</span>
+  </div>
+</footer>
+
+<script>
+const cursor=document.querySelector('.cursor');
+const cursorRing=document.querySelector('.cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function ring(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(ring);}
+ring();
+const hoverSelector='a,button,.service-card,.gallery-slot,.project-tab,.capability,.arch-item,.feature-item,.process-step';
+document.querySelectorAll(hoverSelector).forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='12px';cursor.style.height='12px';cursor.style.background='var(--accent-2)';cursorRing.style.width='52px';cursorRing.style.height='52px';cursorRing.style.opacity='0.8';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='6px';cursor.style.height='6px';cursor.style.background='var(--accent)';cursorRing.style.width='32px';cursorRing.style.height='32px';cursorRing.style.opacity='0.4';});
+});
+
+const scrollProgress=document.getElementById('scrollProgress');
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  const total=document.documentElement.scrollHeight-window.innerHeight;
+  scrollProgress.style.width=(window.scrollY/total*100)+'%';
+  nav.classList.toggle('scrolled',window.scrollY>50);
+});
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+function animateCounter(el,target){
+  const duration=1800;const start=0;const startTime=performance.now();
+  function update(now){
+    const elapsed=now-startTime;
+    const progress=Math.min(elapsed/duration,1);
+    const ease=1-Math.pow(1-progress,3);
+    const value=Math.floor(start+(target-start)*ease);
+    el.textContent=value.toLocaleString();
+    if(progress<1)requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.stat-num').forEach(el=>{
+    const target=parseInt(el.dataset.target);
+    setTimeout(()=>animateCounter(el,target),400);
+  });
+});
+
+document.querySelectorAll('.project').forEach(project=>{
+  const tabs=project.querySelectorAll('.project-tab');
+  const panels=project.querySelectorAll('.tab-panel');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const target=tab.dataset.tab;
+      tabs.forEach(t=>t.classList.remove('active'));
+      panels.forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      project.querySelector(`.tab-panel[data-tab="${target}"]`).classList.add('active');
+    });
+  });
+});
+
+function setupSlot(slot){
+  const input=slot.querySelector('input[type="file"]');
+  const img=slot.querySelector('img');
+  const prompt=slot.querySelector('.upload-prompt');
+  const removeBtn=slot.querySelector('.remove-btn');
+  
+  slot.addEventListener('click',e=>{
+    if(e.target===removeBtn||removeBtn.contains(e.target))return;
+    if(!slot.classList.contains('has-image')&&input){input.click();}
+  });
+  slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('dragover');});
+  slot.addEventListener('dragleave',()=>slot.classList.remove('dragover'));
+  slot.addEventListener('drop',e=>{
+    e.preventDefault();slot.classList.remove('dragover');
+    const file=e.dataTransfer.files[0];
+    if(file&&file.type.startsWith('image/'))handleImageUpload(slot,file);
+    else showToast('Please drop an image file','fa-triangle-exclamation');
+  });
+  if(input){
+    input.addEventListener('change',e=>{
+      const file=e.target.files[0];
+      if(file)handleImageUpload(slot,file);
+    });
+  }
+  if(removeBtn){
+    removeBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      slot.classList.remove('has-image');
+      if(img)img.src='';
+      if(prompt)prompt.style.display='';
+      if(input)input.value='';
+      showToast('Screenshot removed','fa-trash');
+    });
+  }
+}
+function handleImageUpload(slot,file){
+  if(file.size>10*1024*1024){showToast('Image too large (max 10MB)','fa-triangle-exclamation');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=slot.querySelector('img');
+    const prompt=slot.querySelector('.upload-prompt');
+    if(img){
+      img.src=e.target.result;
+      img.alt=file.name;
+      slot.classList.add('has-image');
+      if(prompt)prompt.style.display='none';
+      showToast('Screenshot added to gallery','fa-check-circle');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+document.querySelectorAll('.gallery-slot').forEach(setupSlot);
+
+document.querySelectorAll('.add-image-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const gallery=btn.closest('.tab-panel').querySelector('.gallery-grid');
+    const slot=document.createElement('label');
+    slot.className='gallery-slot';
+    slot.innerHTML=`
+      <input type="file" accept="image/*" hidden>
+      <div class="upload-prompt"><i class="fas fa-image"></i><span>Upload Screenshot</span><small>Click or drop image</small></div>
+      <img alt="">
+      <button class="remove-btn" type="button"><i class="fas fa-times"></i></button>
+    `;
+    gallery.appendChild(slot);
+    setupSlot(slot);
+    slot.addEventListener('mouseenter',()=>{cursor.style.width='12px';cursor.style.height='12px';cursorRing.style.width='52px';cursorRing.style.height='52px';});
+    slot.addEventListener('mouseleave',()=>{cursor.style.width='6px';cursor.style.height='6px';cursorRing.style.width='32px';cursorRing.style.height='32px';});
+    slot.scrollIntoView({behavior:'smooth',block:'center'});
+    showToast('New image slot added','fa-plus-circle');
+  });
+});
+
+document.querySelectorAll('.add-note-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const panel=btn.closest('.tab-panel');
+    const composer=panel.querySelector('.note-composer');
+    composer.classList.add('active');
+    composer.querySelector('textarea').focus();
+  });
+});
+document.querySelectorAll('.note-composer-btn.cancel').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const composer=btn.closest('.note-composer');
+    composer.classList.remove('active');
+    composer.querySelector('textarea').value='';
+  });
+});
+document.querySelectorAll('.note-composer-btn.save').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const composer=btn.closest('.note-composer');
+    const textarea=composer.querySelector('textarea');
+    const text=textarea.value.trim();
+    if(!text){showToast('Note is empty','fa-triangle-exclamation');return;}
+    const gallery=btn.closest('.tab-panel').querySelector('.gallery-grid');
+    const note=document.createElement('div');
+    note.className='gallery-note';
+    note.innerHTML=`
+      <button class="note-remove"><i class="fas fa-times"></i></button>
+      <div class="note-label"><i class="fas fa-quote-left"></i>Project Note</div>
+      <div class="note-text"></div>
+    `;
+    note.querySelector('.note-text').textContent=text;
+    gallery.appendChild(note);
+    note.querySelector('.note-remove').addEventListener('click',()=>{
+      note.style.opacity='0';
+      note.style.transform='translateX(-20px)';
+      setTimeout(()=>note.remove(),300);
+      showToast('Note removed','fa-trash');
+    });
+    textarea.value='';
+    composer.classList.remove('active');
+    showToast('Note added to gallery','fa-check-circle');
+  });
+});
+
+function showToast(message,icon='fa-check-circle'){
+  const existing=document.querySelector('.toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.className='toast';
+  toast.innerHTML=`<i class="fas ${icon}"></i> ${message}`;
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.classList.add('show'),10);
+  setTimeout(()=>{
+    toast.classList.remove('show');
+    setTimeout(()=>toast.remove(),400);
+  },2800);
+}
+
+document.querySelector('.contact-form')?.addEventListener('submit',e=>{
+  e.preventDefault();
+  showToast('Thanks — we\'ll be in touch within 24 hours.','fa-paper-plane');
+  e.target.reset();
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');
+    if(id.length>1){
+      const target=document.querySelector(id);
+      if(target){
+        e.preventDefault();
+        const offset=target.getBoundingClientRect().top+window.scrollY-80;
+        window.scrollTo({top:offset,behavior:'smooth'});
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
