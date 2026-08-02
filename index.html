@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LuluLab — Custom Web Application Studio</title>
+<!-- Favicon: L mark matching the website logo -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B1957'/%3E%3Ctext x='50' y='72' font-family='Arial,sans-serif' font-size='65' font-weight='bold' fill='%23FA9EBC' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -280,12 +282,46 @@ footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(
 .footer-col a:hover{color:var(--accent)}
 .footer-bottom{max-width:1400px;margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.74rem;color:var(--fg-3);flex-wrap:wrap;gap:1rem;text-transform:uppercase;letter-spacing:.08em}
 
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elevated);border:1px solid var(--accent);color:var(--fg);padding:.85rem 1.4rem;border-radius:8px;font-size:.88rem;z-index:10000;opacity:0;transition:all .4s;display:flex;align-items:center;gap:.55rem;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-bright);font-family:var(--mono);font-weight:500}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elevated);border:1px solid var(--accent);color:var(--fg);padding:.85rem 1.4rem;border-radius:8px;font-size:.88rem;z-index:10002;opacity:0;transition:all .4s;display:flex;align-items:center;gap:.55rem;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-bright);font-family:var(--mono);font-weight:500}
+.toast.show{transform:translateX(-50%) translateY(-10rem);opacity:1}
 .toast i{color:var(--accent)}
 
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
+
+/* === CMS EDIT MODE STYLES === */
+[data-cms-id]:hover { outline: 1px dashed rgba(250, 158, 188, 0.4); outline-offset: 4px; }
+body.edit-mode [data-cms-id] { outline: 1px dashed rgba(250, 158, 188, 0.3); outline-offset: 4px; transition: outline-color 0.2s; cursor: text; }
+body.edit-mode [data-cms-id]:hover { outline-color: var(--accent); background: rgba(250, 158, 188, 0.05); }
+body.edit-mode img[data-cms-id] { cursor: pointer; }
+body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
+
+/* === LOGIN MODAL === */
+.login-modal { position: fixed; inset: 0; background: rgba(11, 25, 87, 0.8); backdrop-filter: blur(12px); z-index: 10001; display: none; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
+.login-modal.active { display: flex; }
+.login-box { background: var(--bg-2); border: 1px solid var(--border-bright); padding: 2.5rem; border-radius: 12px; width: 100%; max-width: 380px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.login-box h3 { font-family: var(--display); font-size: 1.4rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--fg); }
+.login-box p { font-family: var(--mono); font-size: 0.72rem; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.8rem; }
+.login-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; color: var(--fg); font-family: var(--sans); font-size: 0.95rem; outline: none; transition: all 0.3s; margin-bottom: 1rem; }
+.login-input:focus { border-color: var(--accent); background: var(--bg-3); box-shadow: 0 0 0 3px var(--pink-soft); }
+.login-btn { width: 100%; padding: 0.8rem; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; font-family: var(--mono); font-weight: 600; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.2s; }
+.login-btn:hover { background: var(--accent-2); }
+.login-error { color: #ff6b6b; font-size: 0.85rem; font-family: var(--mono); margin-top: 1rem; text-align: center; display: none; }
+.login-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--fg-3); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+.login-close:hover { color: var(--fg); }
+
+/* === ADMIN TOOLBAR === */
+.admin-toolbar { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--bg-elevated); border: 1px solid var(--accent); border-radius: 12px; padding: 0.6rem 1rem; display: none; align-items: center; gap: 0.8rem; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.4); font-family: var(--mono); flex-wrap: wrap; justify-content: center; }
+.admin-toolbar.active { display: flex; }
+.admin-status { font-size: 0.75rem; color: var(--fg-2); text-transform: uppercase; letter-spacing: 0.08em; padding-right: 0.8rem; border-right: 1px solid var(--border); display: flex; align-items: center; gap: 0.4rem; }
+.admin-status .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+.admin-btn { padding: 0.5rem 0.9rem; background: var(--bg-3); border: 1px solid var(--border-bright); color: var(--fg); border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.4rem; }
+.admin-btn:hover { background: var(--bg-card); border-color: var(--accent); }
+.admin-btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.admin-btn.primary:hover { background: var(--accent-2); }
+.admin-btn.danger { background: transparent; color: #ff6b6b; border-color: rgba(255, 107, 107, 0.3); }
+.admin-btn.danger:hover { background: rgba(255, 107, 107, 0.1); border-color: #ff6b6b; }
 
 @media(max-width:1024px){
   .hero-content{grid-template-columns:1fr}
@@ -328,7 +364,7 @@ footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <nav id="nav">
-  <a href="#top" class="logo"><span class="logo-mark">L</span>LuluLab</a>
+  <a href="#top" class="logo"><span class="logo-mark">L</span>ululab</a>
   <ul class="nav-links">
     <li><a href="#profile">studio</a></li>
     <li><a href="#services">services</a></li>
@@ -830,7 +866,7 @@ footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(
 <footer>
   <div class="footer-grid">
     <div>
-      <div class="footer-brand"><span class="logo-mark">L</span>LuluLab</div>
+      <div class="footer-brand"><span class="logo-mark">L</span>ululab</div>
       <p class="footer-brand-desc">A custom web application studio building bespoke business software from scratch — no templates, no frameworks, no recycled themes. Just purpose-built applications, written line by line.</p>
     </div>
     <div class="footer-col"><h5>Studio</h5><ul><li><a href="#profile">about</a></li><li><a href="#services">services</a></li><li><a href="#capabilities">capabilities</a></li><li><a href="#process">process</a></li></ul></div>
@@ -842,7 +878,30 @@ footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(
   </div>
 </footer>
 
+<!-- HIDDEN LOGIN MODAL -->
+<div id="login-modal" class="login-modal">
+  <div class="login-box">
+    <button class="login-close" onclick="hideLogin()"><i class="fas fa-times"></i></button>
+    <h3>Studio Access</h3>
+    <p>Restricted Edit Mode</p>
+    <input type="text" id="login-user" class="login-input" placeholder="Username" autocomplete="username">
+    <input type="password" id="login-pass" class="login-input" placeholder="Password" autocomplete="current-password">
+    <button class="login-btn" onclick="attemptLogin()">Enter Edit Mode</button>
+    <div id="login-error" class="login-error">Invalid credentials. Please try again.</div>
+  </div>
+</div>
+
+<!-- HIDDEN ADMIN TOOLBAR -->
+<div id="admin-toolbar" class="admin-toolbar">
+  <div class="admin-status"><span class="dot"></span>Admin Mode</div>
+  <button class="admin-btn" id="toggle-edit-btn" onclick="toggleEditMode()"><i class="fas fa-pen"></i>Toggle Edit</button>
+  <button class="admin-btn primary" onclick="saveChanges()"><i class="fas fa-save"></i>Save Changes</button>
+  <button class="admin-btn" onclick="exportHTML()"><i class="fas fa-download"></i>Export HTML</button>
+  <button class="admin-btn danger" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+</div>
+
 <script>
+// === CURSOR & UI EFFECTS ===
 const cursor=document.querySelector('.cursor');
 const cursorRing=document.querySelector('.cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
@@ -1049,6 +1108,192 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
       }
     }
   });
+});
+
+// ==========================================
+// HIDDEN CMS & ADMIN LOGIC
+// ==========================================
+const ADMIN_USER = 'Jeinna';
+// Base64 encoded password for slight obfuscation ($Jeinna1802$)
+const ADMIN_PASS_B64 = 'JEplaW5uYTE4MDIk'; 
+let isLoggedIn = localStorage.getItem('lululab_admin') === 'true';
+let isEditMode = false;
+
+// Initialize CMS IDs on load
+function initCmsIds() {
+    const textSelectors = 'h1, h2, h3, h4, h5, p, .stat-num, .project-title, .project-tagline, .service-title, .service-desc, .capability-title, .capability-desc, .feature-title, .feature-desc, .arch-item-title, .arch-item-desc, .process-step-title, .process-step-desc, .contact-title, .contact-sub, .role-pill';
+    let txtCounter = 0;
+    document.querySelectorAll(textSelectors).forEach(el => {
+        el.dataset.cmsId = 'txt_' + txtCounter++;
+    });
+    let imgCounter = 0;
+    document.querySelectorAll('img').forEach(el => {
+        el.dataset.cmsId = 'img_' + imgCounter++;
+    });
+}
+
+// Load saved content from local storage
+function loadCmsData() {
+    const saved = localStorage.getItem('lululab_cms_data');
+    if (!saved) return;
+    try {
+        const data = JSON.parse(saved);
+        for (const [id, content] of Object.entries(data)) {
+            const el = document.querySelector(`[data-cms-id="${id}"]`);
+            if (el) {
+                if (el.tagName === 'IMG') el.src = content;
+                else el.innerHTML = content;
+            }
+        }
+    } catch(e) { console.error("CMS Load Error", e); }
+}
+
+// Run initialization immediately
+initCmsIds();
+loadCmsData();
+
+// Show admin toolbar if already logged in
+if (isLoggedIn) {
+    document.getElementById('admin-toolbar').classList.add('active');
+}
+
+// Trigger login via URL hash or keyboard shortcut
+if (window.location.hash === '#login') {
+    showLogin();
+}
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+        e.preventDefault();
+        if (isLoggedIn) {
+            showToast('Already logged in.', 'fa-info-circle');
+        } else {
+            showLogin();
+        }
+    }
+});
+
+function showLogin() {
+    document.getElementById('login-modal').classList.add('active');
+    setTimeout(() => document.getElementById('login-user').focus(), 100);
+}
+
+function hideLogin() {
+    document.getElementById('login-modal').classList.remove('active');
+}
+
+function attemptLogin() {
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
+    const errBox = document.getElementById('login-error');
+    
+    if (user === ADMIN_USER && btoa(pass) === ADMIN_PASS_B64) {
+        isLoggedIn = true;
+        localStorage.setItem('lululab_admin', 'true');
+        document.getElementById('admin-toolbar').classList.add('active');
+        hideLogin();
+        showToast('Edit mode unlocked.', 'fa-unlock');
+    } else {
+        errBox.style.display = 'block';
+        setTimeout(() => errBox.style.display = 'none', 3000);
+    }
+}
+
+function toggleEditMode() {
+    isEditMode = !isEditMode;
+    document.body.classList.toggle('edit-mode', isEditMode);
+    const btn = document.getElementById('toggle-edit-btn');
+    
+    if (isEditMode) {
+        btn.innerHTML = '<i class="fas fa-eye"></i>Exit Edit';
+        showToast('Edit mode active. Click text or images to edit.', 'fa-pen');
+        
+        // Add image click handlers for edit mode
+        document.querySelectorAll('img[data-cms-id]').forEach(img => {
+            img.addEventListener('click', handleImageEdit);
+        });
+    } else {
+        btn.innerHTML = '<i class="fas fa-pen"></i>Toggle Edit';
+        showToast('Edit mode paused.', 'fa-eye');
+        
+        document.querySelectorAll('img[data-cms-id]').forEach(img => {
+            img.removeEventListener('click', handleImageEdit);
+        });
+    }
+}
+
+function handleImageEdit(e) {
+    if (!isEditMode) return;
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = ev => {
+        const file = ev.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = readerEv => {
+                e.target.src = readerEv.target.result;
+                showToast('Image updated. Click Save to keep.', 'fa-image');
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    input.click();
+}
+
+function saveChanges() {
+    const data = {};
+    document.querySelectorAll('[data-cms-id]').forEach(el => {
+        if (el.tagName === 'IMG') data[el.dataset.cmsId] = el.src;
+        else data[el.dataset.cmsId] = el.innerHTML;
+    });
+    localStorage.setItem('lululab_cms_data', JSON.stringify(data));
+    showToast('Changes saved to browser successfully.', 'fa-check-circle');
+}
+
+function exportHTML() {
+    // Clone the document
+    const clone = document.documentElement.cloneNode(true);
+    
+    // Clean up the clone for export
+    clone.querySelector('#admin-toolbar')?.remove();
+    clone.querySelector('#login-modal')?.remove();
+    clone.body.classList.remove('edit-mode');
+    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    clone.querySelectorAll('[data-cms-id]').forEach(el => el.removeAttribute('data-cms-id'));
+    // Remove CMS script logic from the export to make it clean for production
+    // (Optional, but keeps the exported file pristine)
+    const scripts = clone.querySelectorAll('script');
+    scripts.forEach(s => {
+        if (s.textContent.includes('HIDDEN CMS & ADMIN LOGIC')) {
+            // Extract only the front-end scripts, leave out the CMS core
+            // Actually, we should leave the script intact so the user can continue editing the new file.
+            // We'll just leave it.
+        }
+    });
+
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], {type: 'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'index.html';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Exporting updated HTML file...', 'fa-download');
+}
+
+function logoutAdmin() {
+    localStorage.removeItem('lululab_admin');
+    isLoggedIn = false;
+    isEditMode = false;
+    document.body.classList.remove('edit-mode');
+    document.getElementById('admin-toolbar').classList.remove('active');
+    showToast('Logged out successfully.', 'fa-sign-out-alt');
+}
+
+// Close login modal on outside click
+document.getElementById('login-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'login-modal') hideLogin();
 });
 </script>
 </body>
