@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LuluLab — Custom Web Application Studio</title>
-<!-- Favicon: L mark matching the website logo -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B1957'/%3E%3Ctext x='50' y='72' font-family='Arial,sans-serif' font-size='65' font-weight='bold' fill='%23FA9EBC' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
+<!-- Favicon: Pink square with white L to match website logo -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23FA9EBC'/%3E%3Ctext x='50' y='72' font-family='Arial,sans-serif' font-size='62' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -33,10 +33,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.4rem 3rem;display:flex;justify-content:space-between;align-items:center;transition:all .4s}
 nav.scrolled{padding:.9rem 3rem;background:rgba(11,25,87,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.logo{font-family:var(--display);font-weight:600;font-size:1.4rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.6rem;color:var(--fg);text-decoration:none}
-.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--bg);position:relative;overflow:hidden}
-.logo-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.4) 50%,transparent 60%);animation:shimmer 3s infinite}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.logo{font-family:var(--display);font-weight:600;font-size:1.4rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.1rem;color:var(--fg);text-decoration:none}
+.logo-mark{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;position:relative;overflow:hidden}
+/* Removed shimmer for clean look matching the favicon */
+.logo-mark::after{content:none}
 .nav-links{display:flex;gap:2.2rem;list-style:none}
 .nav-links a{color:var(--fg-2);text-decoration:none;font-size:.88rem;font-weight:500;position:relative;transition:color .3s;font-family:var(--mono);text-transform:lowercase}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
@@ -299,7 +299,7 @@ body.admin-logged-in .gallery-slot.has-image .remove-btn{display:flex}
 
 footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(--border);position:relative;z-index:2}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1400px;margin:0 auto 2.5rem}
-.footer-brand{font-family:var(--display);font-size:1.6rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.6rem}
+.footer-brand{font-family:var(--display);font-size:1.6rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.1rem}
 .footer-brand-desc{color:var(--fg-2);max-width:360px;line-height:1.65;font-size:.92rem}
 .footer-col h5{font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;font-weight:500}
 .footer-col ul{list-style:none}
@@ -332,7 +332,7 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
 .login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
 .login-box h3 { font-family: var(--display); font-size: 1.4rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--fg); }
 .login-box p { font-family: var(--mono); font-size: 0.72rem; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.8rem; }
-.login-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; color: var(--fg); font-family: var(--sans); font-size: 0.95rem; outline: none; transition: all 0.3s; margin-bottom: 1rem; }
+.login-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; color: var(--fg); font-family: var(--sans); font-size: 0.95rem; outline:none; transition: all 0.3s; margin-bottom: 1rem; }
 .login-input:focus { border-color: var(--accent); background: var(--bg-3); box-shadow: 0 0 0 3px var(--pink-soft); }
 .login-btn { width: 100%; padding: 0.8rem; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; font-family: var(--mono); font-weight: 600; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.2s; }
 .login-btn:hover { background: var(--accent-2); }
