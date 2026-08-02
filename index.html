@@ -15,8 +15,10 @@
   --bg:#0B1957; --bg-2:#0A1648; --bg-3:#0D1B5E; --bg-card:#0F1E66; --bg-elevated:#13216F;
   --fg:#F8F3EA; --fg-2:rgba(248,243,234,.72); --fg-3:rgba(248,243,234,.42);
   --accent:#FA9EBC; --accent-2:#FFDBD1; --accent-deep:#E87E9C;
+  --blue-accent:#7AA2FF; --blue-accent-2:#AECBFF; --blue-deep:#5E7BFF;
   --pink-soft:rgba(250,158,188,.1); --pink-glow:rgba(250,158,188,.18);
-  --border:rgba(248,243,234,.08); --border-bright:rgba(250,158,188,.28);
+  --blue-soft:rgba(122,162,255,.1); 
+  --border:rgba(248,243,234,.08); --border-bright:rgba(250,158,188,.28); --border-blue:rgba(122,162,255,.28);
   --grid-line:rgba(248,243,234,.04);
   --display:'Space Grotesk',sans-serif; --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
 }
@@ -150,21 +152,28 @@ section{position:relative;padding:7rem 3rem;z-index:2}
 
 .portfolio-section{background:var(--bg)}
 .portfolio-projects{display:flex;flex-direction:column;gap:2.5rem}
-.project{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s}
+.project{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s;position:relative}
+.project::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent);z-index:5}
+.project:nth-of-type(2)::before{background:var(--blue-accent)}
 .project:hover{border-color:var(--border-bright)}
+.project:nth-of-type(2):hover{border-color:var(--border-blue)}
 .project-header{padding:2.8rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;border-bottom:1px solid var(--border);position:relative;background:linear-gradient(135deg,var(--bg-2) 0%,var(--bg-3) 100%)}
-.project-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
 .project-num{font-family:var(--mono);font-size:.72rem;color:var(--accent);margin-bottom:1rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;gap:.6rem}
+.project:nth-of-type(2) .project-num{color:var(--blue-accent)}
 .project-num .line{width:24px;height:1px;background:var(--accent)}
+.project:nth-of-type(2) .project-num .line{background:var(--blue-accent)}
 .project-title{font-family:var(--display);font-size:clamp(1.7rem,3.2vw,2.3rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;margin-bottom:.6rem;color:var(--fg)}
 .project-tagline{font-family:var(--display);font-style:italic;font-size:1.05rem;color:var(--accent);margin-bottom:1.5rem;font-weight:400}
+.project:nth-of-type(2) .project-tagline{color:var(--blue-accent)}
 .project-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
 .meta-chip{font-family:var(--mono);font-size:.66rem;color:var(--fg-2);padding:.28rem .7rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
 .meta-chip.accent{background:var(--pink-soft);color:var(--accent);border-color:var(--border-bright)}
+.project:nth-of-type(2) .meta-chip.accent{background:var(--blue-soft);color:var(--blue-accent);border-color:var(--border-blue)}
 .project-stats{display:flex;gap:1.3rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .project-stat{text-align:right;padding-left:1.3rem;border-left:1px solid var(--border)}
 .project-stat:first-child{border-left:none;padding-left:0}
 .project-stat-num{font-family:var(--display);font-size:1.5rem;font-weight:600;color:var(--accent);line-height:1}
+.project:nth-of-type(2) .project-stat-num{color:var(--blue-accent)}
 .project-stat-label{font-family:var(--mono);font-size:.62rem;color:var(--fg-3);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
 
 .project-tabs{display:flex;gap:0;padding:0 2.8rem;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--bg-3)}
@@ -172,7 +181,9 @@ section{position:relative;padding:7rem 3rem;z-index:2}
 .project-tab{padding:1.1rem 1.4rem;background:transparent;border:none;color:var(--fg-3);font-family:var(--mono);font-size:.78rem;font-weight:500;cursor:none;position:relative;transition:color .3s;white-space:nowrap;display:flex;align-items:center;gap:.5rem;text-transform:uppercase;letter-spacing:.08em}
 .project-tab:hover{color:var(--fg-2)}
 .project-tab.active{color:var(--accent)}
+.project:nth-of-type(2) .project-tab.active{color:var(--blue-accent)}
 .project-tab.active::after{content:'';position:absolute;bottom:-1px;left:1.4rem;right:1.4rem;height:2px;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.project:nth-of-type(2) .project-tab.active::after{background:var(--blue-accent);box-shadow:0 0 8px var(--blue-accent)}
 .project-content{padding:2.8rem;min-height:400px;background:var(--bg-2)}
 .tab-panel{display:none;animation:fadeIn .4s ease}
 .tab-panel.active{display:block}
@@ -184,26 +195,35 @@ section{position:relative;padding:7rem 3rem;z-index:2}
 .arch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
 .arch-item{padding:1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;transition:all .3s;position:relative;overflow:hidden}
 .arch-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--accent);transition:height .3s}
+.project:nth-of-type(2) .arch-item::before{background:var(--blue-accent)}
 .arch-item:hover::before{height:100%}
 .arch-item:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--bg-card)}
+.project:nth-of-type(2) .arch-item:hover{border-color:var(--border-blue)}
 .arch-item-title{font-family:var(--display);font-size:1rem;font-weight:600;margin-bottom:.5rem;color:var(--fg);display:flex;align-items:center;gap:.6rem;letter-spacing:-.005em}
 .arch-item-title i{color:var(--accent);font-size:.85rem}
+.project:nth-of-type(2) .arch-item-title i{color:var(--blue-accent)}
 .arch-item-desc{color:var(--fg-2);font-size:.87rem;line-height:1.55}
 
 .features-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
 .feature-item{padding:1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;transition:all .3s;position:relative;border-left:3px solid var(--accent)}
+.project:nth-of-type(2) .feature-item{border-left-color:var(--blue-accent)}
 .feature-item:hover{background:var(--bg-card);transform:translateX(3px);border-color:var(--border-bright);border-left-color:var(--accent)}
+.project:nth-of-type(2) .feature-item:hover{border-color:var(--border-blue);border-left-color:var(--blue-accent)}
 .feature-title{font-family:var(--display);font-weight:600;color:var(--fg);margin-bottom:.4rem;font-size:.98rem;letter-spacing:-.005em}
 .feature-desc{color:var(--fg-2);font-size:.87rem;line-height:1.55}
 
 .roles-visual{margin-top:2rem;padding:1.8rem;background:var(--bg);border:1px solid var(--border);border-radius:10px}
 .roles-visual h5{font-family:var(--display);font-size:1.05rem;font-weight:600;margin-bottom:1.2rem;color:var(--fg);display:flex;align-items:center;gap:.6rem}
 .roles-visual h5 i{color:var(--accent);font-size:.85rem}
+.project:nth-of-type(2) .roles-visual h5 i{color:var(--blue-accent)}
 .roles-display{display:flex;flex-wrap:wrap;gap:.5rem}
 .role-pill{padding:.45rem .9rem;background:var(--bg-3);border:1px solid var(--border-bright);border-radius:6px;font-family:var(--mono);font-size:.74rem;color:var(--accent);font-weight:500}
+.project:nth-of-type(2) .role-pill{color:var(--blue-accent);border-color:var(--border-blue)}
 .role-pill .role-desc{color:var(--fg-3);margin-left:.4rem;font-weight:400}
 
-.gallery-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;padding:1.2rem 1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+/* Gallery Security - Hidden from visitors */
+.gallery-toolbar{display:none;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;padding:1.2rem 1.4rem;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+body.admin-logged-in .gallery-toolbar{display:flex}
 .gallery-hint{color:var(--fg-3);font-family:var(--mono);font-size:.78rem;display:flex;align-items:center;gap:.6rem}
 .gallery-hint i{color:var(--accent)}
 .gallery-actions{display:flex;gap:.5rem;flex-wrap:wrap}
@@ -211,7 +231,7 @@ section{position:relative;padding:7rem 3rem;z-index:2}
 .gallery-btn:hover{background:var(--pink-soft);border-style:solid;transform:translateY(-1px)}
 
 .note-composer{background:var(--bg);border:1px solid var(--border-bright);border-radius:10px;padding:1.2rem;margin-bottom:1.5rem;display:none}
-.note-composer.active{display:block;animation:fadeIn .3s}
+body.admin-logged-in .note-composer.active{display:block;animation:fadeIn .3s}
 .note-composer textarea{width:100%;background:transparent;border:none;color:var(--fg);font-family:var(--sans);font-size:.95rem;resize:vertical;min-height:80px;outline:none;line-height:1.6}
 .note-composer textarea::placeholder{color:var(--fg-3)}
 .note-composer-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.6rem}
@@ -223,21 +243,27 @@ section{position:relative;padding:7rem 3rem;z-index:2}
 .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
 .gallery-slot{aspect-ratio:16/10;background:var(--bg);border:1px dashed var(--border);border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:none;transition:all .3s}
 .gallery-slot:hover{border-color:var(--accent);background:var(--bg-3)}
-.gallery-slot.has-image{cursor:none}
+.gallery-slot.has-image{cursor:none;border-style:solid}
 .gallery-slot img{width:100%;height:100%;object-fit:cover;display:block}
-.gallery-slot .upload-prompt{text-align:center;color:var(--fg-3);padding:1rem;pointer-events:none}
+
+/* Hide upload prompts and remove buttons from visitors */
+.gallery-slot .upload-prompt{display:none}
+body.admin-logged-in .gallery-slot:not(.has-image) .upload-prompt{display:block;text-align:center;color:var(--fg-3);padding:1rem;pointer-events:none}
 .gallery-slot .upload-prompt i{font-size:1.5rem;color:var(--accent);margin-bottom:.6rem;display:block}
 .gallery-slot .upload-prompt span{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;display:block;color:var(--fg-2);font-weight:500}
 .gallery-slot .upload-prompt small{font-size:.68rem;color:var(--fg-3);display:block;margin-top:.3rem}
+
 .gallery-slot.dragover{border-color:var(--accent);background:var(--pink-soft);transform:scale(1.02)}
 .gallery-slot .remove-btn{position:absolute;top:.5rem;right:.5rem;width:26px;height:26px;background:rgba(11,25,87,.85);border:1px solid var(--border-bright);color:var(--fg);border-radius:6px;cursor:none;display:none;align-items:center;justify-content:center;font-size:.7rem;transition:all .2s;backdrop-filter:blur(4px)}
-.gallery-slot.has-image .remove-btn{display:flex}
+body.admin-logged-in .gallery-slot.has-image .remove-btn{display:flex}
 .gallery-slot .remove-btn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
 .gallery-slot .caption{position:absolute;bottom:0;left:0;right:0;padding:.6rem .8rem;background:linear-gradient(0deg,rgba(11,25,87,.95),transparent);font-size:.74rem;color:var(--fg);font-family:var(--mono);opacity:0;transition:opacity .3s}
 .gallery-slot.has-image:hover .caption{opacity:1}
 
 .gallery-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:1.4rem;position:relative;animation:fadeIn .4s}
+.project:nth-of-type(2) .gallery-note{border-left-color:var(--blue-accent)}
 .gallery-note .note-label{font-family:var(--mono);font-size:.66rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;font-weight:500}
+.project:nth-of-type(2) .gallery-note .note-label{color:var(--blue-accent)}
 .gallery-note .note-text{color:var(--fg);font-size:.92rem;line-height:1.65;font-family:var(--sans)}
 .gallery-note .note-remove{position:absolute;top:1rem;right:1rem;background:var(--bg-3);border:1px solid var(--border);color:var(--fg-3);cursor:none;font-size:.75rem;width:24px;height:24px;border-radius:6px;transition:all .2s;display:flex;align-items:center;justify-content:center}
 .gallery-note .note-remove:hover{background:var(--accent-deep);color:var(--fg);border-color:var(--accent-deep)}
@@ -281,6 +307,9 @@ footer{background:var(--bg-2);padding:3.5rem 3rem 2rem;border-top:1px solid var(
 .footer-col a{color:var(--fg-2);text-decoration:none;font-size:.9rem;transition:color .3s;font-family:var(--mono)}
 .footer-col a:hover{color:var(--accent)}
 .footer-bottom{max-width:1400px;margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.74rem;color:var(--fg-3);flex-wrap:wrap;gap:1rem;text-transform:uppercase;letter-spacing:.08em}
+
+/* Hidden admin trigger in footer */
+.admin-trigger{position:absolute;bottom:15px;right:20px;width:20px;height:20px;cursor:pointer;opacity:0;z-index:10}
 
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-elevated);border:1px solid var(--accent);color:var(--fg);padding:.85rem 1.4rem;border-radius:8px;font-size:.88rem;z-index:10002;opacity:0;transition:all .4s;display:flex;align-items:center;gap:.55rem;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-bright);font-family:var(--mono);font-weight:500}
 .toast.show{transform:translateX(-50%) translateY(-10rem);opacity:1}
@@ -612,6 +641,7 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
     </div>
 
     <div class="portfolio-projects">
+      <!-- PROJECT 1 -->
       <div class="project reveal" data-project="1">
         <div class="project-header">
           <div>
@@ -717,6 +747,7 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
         </div>
       </div>
 
+      <!-- PROJECT 2 -->
       <div class="project reveal" data-project="2">
         <div class="project-header">
           <div>
@@ -876,6 +907,8 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
     <span>© 2025 LuluLab — Built from scratch, by hand</span>
     <span>Vanilla JS · Supabase · Zero Templates</span>
   </div>
+  <!-- Hidden Admin Trigger (Invisible button in bottom right) -->
+  <div class="admin-trigger" onclick="showLogin()" title="Admin"></div>
 </footer>
 
 <!-- HIDDEN LOGIN MODAL -->
@@ -944,6 +977,10 @@ window.addEventListener('load',()=>{
     const target=parseInt(el.dataset.target);
     setTimeout(()=>animateCounter(el,target),400);
   });
+  // Check URL hash for login on load
+  if (window.location.hash === '#login') {
+    showLogin();
+  }
 });
 
 document.querySelectorAll('.project').forEach(project=>{
@@ -960,6 +997,9 @@ document.querySelectorAll('.project').forEach(project=>{
   });
 });
 
+// ==========================================
+// GALLERY LOGIC (SECURE)
+// ==========================================
 function setupSlot(slot){
   const input=slot.querySelector('input[type="file"]');
   const img=slot.querySelector('img');
@@ -967,12 +1007,14 @@ function setupSlot(slot){
   const removeBtn=slot.querySelector('.remove-btn');
   
   slot.addEventListener('click',e=>{
+    if(!isLoggedIn) return; // Block visitors
     if(e.target===removeBtn||removeBtn.contains(e.target))return;
     if(!slot.classList.contains('has-image')&&input){input.click();}
   });
-  slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('dragover');});
+  slot.addEventListener('dragover',e=>{ if(!isLoggedIn) return; e.preventDefault();slot.classList.add('dragover');});
   slot.addEventListener('dragleave',()=>slot.classList.remove('dragover'));
   slot.addEventListener('drop',e=>{
+    if(!isLoggedIn) return;
     e.preventDefault();slot.classList.remove('dragover');
     const file=e.dataTransfer.files[0];
     if(file&&file.type.startsWith('image/'))handleImageUpload(slot,file);
@@ -1015,6 +1057,7 @@ document.querySelectorAll('.gallery-slot').forEach(setupSlot);
 
 document.querySelectorAll('.add-image-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    if(!isLoggedIn) return;
     const gallery=btn.closest('.tab-panel').querySelector('.gallery-grid');
     const slot=document.createElement('label');
     slot.className='gallery-slot';
@@ -1035,6 +1078,7 @@ document.querySelectorAll('.add-image-btn').forEach(btn=>{
 
 document.querySelectorAll('.add-note-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    if(!isLoggedIn) return;
     const panel=btn.closest('.tab-panel');
     const composer=panel.querySelector('.note-composer');
     composer.classList.add('active');
@@ -1050,6 +1094,7 @@ document.querySelectorAll('.note-composer-btn.cancel').forEach(btn=>{
 });
 document.querySelectorAll('.note-composer-btn.save').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    if(!isLoggedIn) return;
     const composer=btn.closest('.note-composer');
     const textarea=composer.querySelector('textarea');
     const text=textarea.value.trim();
@@ -1099,7 +1144,7 @@ document.querySelector('.contact-form')?.addEventListener('submit',e=>{
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const id=a.getAttribute('href');
-    if(id.length>1){
+    if(id.length>1 && id !== '#login'){
       const target=document.querySelector(id);
       if(target){
         e.preventDefault();
@@ -1114,9 +1159,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 // HIDDEN CMS & ADMIN LOGIC
 // ==========================================
 const ADMIN_USER = 'Jeinna';
-// Base64 encoded password for slight obfuscation ($Jeinna1802$)
-const ADMIN_PASS_B64 = 'JEplaW5uYTE4MDIk'; 
-let isLoggedIn = localStorage.getItem('lululab_admin') === 'true';
+const ADMIN_PASS_B64 = 'JEplaW5uYTE4MDIk'; // Base64 for $Jeinna1802$ let isLoggedIn = localStorage.getItem('lululab_admin') === 'true';
 let isEditMode = false;
 
 // Initialize CMS IDs on load
@@ -1152,22 +1195,21 @@ function loadCmsData() {
 initCmsIds();
 loadCmsData();
 
-// Show admin toolbar if already logged in
+// Apply admin state on load
 if (isLoggedIn) {
+    document.body.classList.add('admin-logged-in');
     document.getElementById('admin-toolbar').classList.add('active');
 }
 
 // Trigger login via URL hash or keyboard shortcut
-if (window.location.hash === '#login') {
-    showLogin();
-}
+// Changed to Alt/Option + L for Mac compatibility
 document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+    if (e.altKey && (e.key === 'l' || e.key === 'L')) {
         e.preventDefault();
-        if (isLoggedIn) {
-            showToast('Already logged in.', 'fa-info-circle');
-        } else {
+        if (!isLoggedIn) {
             showLogin();
+        } else {
+            showToast('Already logged in.', 'fa-info-circle');
         }
     }
 });
@@ -1189,6 +1231,7 @@ function attemptLogin() {
     if (user === ADMIN_USER && btoa(pass) === ADMIN_PASS_B64) {
         isLoggedIn = true;
         localStorage.setItem('lululab_admin', 'true');
+        document.body.classList.add('admin-logged-in');
         document.getElementById('admin-toolbar').classList.add('active');
         hideLogin();
         showToast('Edit mode unlocked.', 'fa-unlock');
@@ -1251,25 +1294,12 @@ function saveChanges() {
 }
 
 function exportHTML() {
-    // Clone the document
     const clone = document.documentElement.cloneNode(true);
-    
-    // Clean up the clone for export
     clone.querySelector('#admin-toolbar')?.remove();
     clone.querySelector('#login-modal')?.remove();
     clone.body.classList.remove('edit-mode');
     clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
     clone.querySelectorAll('[data-cms-id]').forEach(el => el.removeAttribute('data-cms-id'));
-    // Remove CMS script logic from the export to make it clean for production
-    // (Optional, but keeps the exported file pristine)
-    const scripts = clone.querySelectorAll('script');
-    scripts.forEach(s => {
-        if (s.textContent.includes('HIDDEN CMS & ADMIN LOGIC')) {
-            // Extract only the front-end scripts, leave out the CMS core
-            // Actually, we should leave the script intact so the user can continue editing the new file.
-            // We'll just leave it.
-        }
-    });
 
     const html = '<!DOCTYPE html>\n' + clone.outerHTML;
     const blob = new Blob([html], {type: 'text/html'});
@@ -1287,6 +1317,7 @@ function logoutAdmin() {
     isLoggedIn = false;
     isEditMode = false;
     document.body.classList.remove('edit-mode');
+    document.body.classList.remove('admin-logged-in');
     document.getElementById('admin-toolbar').classList.remove('active');
     showToast('Logged out successfully.', 'fa-sign-out-alt');
 }
