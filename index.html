@@ -104,23 +104,49 @@ section{position:relative;padding:7rem 3rem;z-index:2}
 .section-sub{font-size:1.05rem;color:var(--fg-2);max-width:680px;line-height:1.7}
 
 .profile-section{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.profile-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:start}
-.profile-sticky{position:sticky;top:6rem}
-.profile-sticky h3{font-family:var(--display);font-size:1.6rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.015em}
-.profile-sticky p{color:var(--fg-2);font-size:1rem;line-height:1.7}
-.profile-sticky .id-card{margin-top:2rem;padding:1.5rem;background:var(--bg-3);border:1px solid var(--border);border-radius:10px;font-family:var(--mono);font-size:.78rem}
-.profile-sticky .id-card .row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px dashed var(--border)}
-.profile-sticky .id-card .row:last-child{border-bottom:none}
+.profile-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:4rem;align-items:start}
+.profile-sticky{position:sticky;top:6rem;background:var(--bg-3);border:1px solid var(--border);border-radius:16px;padding:2.5rem;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.profile-sticky h3{font-family:var(--display);font-size:1.5rem;font-weight:600;margin-bottom:1rem;letter-spacing:-.015em;color:var(--fg)}
+.profile-sticky p{color:var(--fg-2);font-size:.98rem;line-height:1.7;margin-bottom:0}
+.profile-sticky .id-card{margin-top:2rem;padding:1.5rem;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;font-family:var(--mono);font-size:.78rem}
+.profile-sticky .id-card .row{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px dashed var(--border)}
+.profile-sticky .id-card .row:last-child{border-bottom:none;padding-bottom:0}
+.profile-sticky .id-card .row:first-child{padding-top:0}
 .profile-sticky .id-card .key{color:var(--fg-3)}
 .profile-sticky .id-card .val{color:var(--accent)}
-.profile-content p{font-size:1.04rem;line-height:1.75;color:var(--fg-2);margin-bottom:1.5rem}
+
+.profile-content{display:flex;flex-direction:column;gap:2.5rem}
+.profile-content p{font-size:1.04rem;line-height:1.75;color:var(--fg-2);margin:0}
 .profile-content p strong{color:var(--fg);font-weight:600}
-.profile-content .lead{font-family:var(--display);font-size:1.5rem;line-height:1.4;color:var(--fg);font-weight:400;margin-bottom:2rem;letter-spacing:-.015em}
+.profile-content .lead{font-family:var(--display);font-size:1.5rem;line-height:1.4;color:var(--fg);font-weight:400;letter-spacing:-.015em}
 .profile-content .lead em{color:var(--accent);font-style:normal;font-weight:500}
-.profile-quote{margin:3rem 0;padding:2rem;border-left:2px solid var(--accent);background:var(--bg-3);border-radius:0 10px 10px 0;position:relative}
-.profile-quote::before{content:'"';position:absolute;top:.5rem;left:1.5rem;font-family:var(--display);font-size:5rem;color:var(--accent);opacity:.2;line-height:1}
-.profile-quote p{font-family:var(--display);font-style:italic;font-size:1.15rem;color:var(--fg);margin-bottom:.5rem;position:relative;z-index:1}
-.profile-quote cite{font-family:var(--mono);font-size:.76rem;color:var(--fg-3);font-style:normal;text-transform:uppercase;letter-spacing:.1em}
+
+/* Visual Profile Elements */
+.profile-contrast { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.contrast-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem; transition: all .3s; display: flex; flex-direction: column; }
+.contrast-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.2); border-color: var(--border-bright); }
+.contrast-card.do-card { border-top: 3px solid var(--accent); }
+.contrast-card.dont-card { border-top: 3px solid rgba(255,255,255,0.15); }
+.contrast-title { font-family: var(--mono); font-size: .8rem; color: var(--fg-2); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1.2rem; display: flex; align-items: center; gap: .5rem; font-weight: 600; }
+.do-card .contrast-title { color: var(--accent); }
+.dont-card .contrast-title { color: var(--fg-3); }
+.contrast-list { list-style: none; display: flex; flex-direction: column; gap: .9rem; flex-grow: 1; }
+.contrast-item { color: var(--fg); font-size: .93rem; display: flex; align-items: flex-start; gap: .6rem; line-height: 1.5; }
+.contrast-item i { margin-top: .2rem; font-size: .75rem; }
+.do-card .contrast-item i { color: var(--accent); }
+.dont-card .contrast-item i { color: var(--fg-3); }
+
+.profile-quote { padding: 2rem 2.5rem; border-radius: 12px; background: linear-gradient(135deg, var(--bg-3), var(--bg-card)); border: 1px solid var(--border-bright); position: relative; overflow: hidden; }
+.profile-quote::before { content: '"'; position: absolute; top: -1.5rem; right: 1.5rem; font-family: var(--display); font-size: 12rem; color: var(--accent); opacity: .1; line-height: 1; }
+.profile-quote p { font-family: var(--display); font-style: italic; font-size: 1.25rem; color: var(--fg); margin-bottom: .5rem; position: relative; z-index: 1; line-height: 1.4; font-weight: 500; }
+.profile-quote cite { font-family: var(--mono); font-size: .76rem; color: var(--accent); font-style: normal; text-transform: uppercase; letter-spacing: .1em; position: relative; z-index: 1; }
+
+.profile-principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.principle-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; transition: all .3s; }
+.principle-card:hover { border-color: var(--accent); transform: translateY(-3px); background: var(--bg-card); }
+.principle-icon { width: 36px; height: 36px; background: var(--pink-soft); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: .95rem; margin-bottom: 1rem; }
+.principle-card h5 { font-family: var(--display); font-size: 1.05rem; font-weight: 600; margin-bottom: .4rem; color: var(--fg); }
+.principle-card p { color: var(--fg-2); font-size: .85rem; line-height: 1.55; margin: 0 !important; padding: 0; font-size: .85rem !important; }
 
 .services-section{background:var(--bg)}
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -364,6 +390,8 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
   .project-header{grid-template-columns:1fr}
   .project-stats{justify-content:flex-start}
   .arch-grid,.features-list{grid-template-columns:1fr}
+  .profile-contrast { grid-template-columns: 1fr; }
+  .profile-principles { grid-template-columns: 1fr; }
 }
 @media(max-width:768px){
   nav{padding:1rem 1.5rem}
@@ -472,16 +500,51 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
         </div>
       </div>
       <div class="profile-content reveal">
-        <p class="lead">Every project we take on starts with a single question — <em>"What does your business actually need?"</em> — and ends with software written specifically to answer it.</p>
-        <p><strong>No templates. No recycled themes. No frameworks chasing trends.</strong> Just purpose-built applications, engineered end-to-end in direct collaboration with the people who will use them every day.</p>
-        <p>Our work lives at the intersection of product thinking, relational database design, and interface craft. We don't ship CRUD demos — we model real workflows: leave management systems with multi-role permissions, payroll engines with audit trails, billing systems with real-time collaboration, performance scoreboards with dispute resolution baked in.</p>
-        <p>Each engagement is treated as an ongoing partnership rather than a one-off deliverable. Features evolve through dozens of iterations shaped by the people actually using the software. The result is applications that fit the business — not the other way around.</p>
+        <p class="lead">Every project starts with a single question — <em>"What does your business actually need?"</em> — and ends with software written specifically to answer it.</p>
+        
+        <div class="profile-contrast">
+          <div class="contrast-card do-card">
+            <div class="contrast-title"><i class="fas fa-check-circle"></i> What We Do</div>
+            <ul class="contrast-list">
+              <li class="contrast-item"><i class="fas fa-check"></i> Sit down with the team & map the actual workflow</li>
+              <li class="contrast-item"><i class="fas fa-check"></i> Design the data model and permission structure</li>
+              <li class="contrast-item"><i class="fas fa-check"></i> Prototype the interface and ship working features</li>
+              <li class="contrast-item"><i class="fas fa-check"></i> Iterate, round after round, with the users</li>
+            </ul>
+          </div>
+          <div class="contrast-card dont-card">
+            <div class="contrast-title"><i class="fas fa-times-circle"></i> What We Avoid</div>
+            <ul class="contrast-list">
+              <li class="contrast-item"><i class="fas fa-times"></i> WordPress themes & Shopify tweaks</li>
+              <li class="contrast-item"><i class="fas fa-times"></i> Template customization or bloated page builders</li>
+              <li class="contrast-item"><i class="fas fa-times"></i> Framework-of-the-week experiments</li>
+              <li class="contrast-item"><i class="fas fa-times"></i> Off-the-shelf solutions for unique problems</li>
+            </ul>
+          </div>
+        </div>
+
         <div class="profile-quote">
           <p>If your problem can be solved by an existing product, we'll tell you. If it can't, we'll build the solution.</p>
           <cite>— LuluLab operating principle</cite>
         </div>
-        <p><strong>What we don't do:</strong> WordPress themes, Shopify tweaks, template customization, or framework-of-the-week experiments. We focus exclusively on bespoke business applications where the requirements demand a custom build.</p>
-        <p><strong>What we do:</strong> sit down with the team, map the actual workflow, design the data model and permission structure, prototype the interface, and ship — then iterate, round after round, until the software disappears into the work it was built to support.</p>
+
+        <div class="profile-principles">
+          <div class="principle-card">
+            <div class="principle-icon"><i class="fas fa-pen-ruler"></i></div>
+            <h5>Purpose-Built</h5>
+            <p>No templates. No recycled themes. Every line of code is written for your specific use case and remains entirely yours.</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-icon"><i class="fas fa-handshake"></i></div>
+            <h5>Iterative Partnership</h5>
+            <p>Engaged as an ongoing partnership. Features evolve through dozens of iterations shaped by the people actually using the software.</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-icon"><i class="fas fa-diagram-project"></i></div>
+            <h5>Real Architecture</h5>
+            <p>Product thinking, relational database design, and interface craft intersect to model real workflows, not CRUD demos.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -882,11 +945,11 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
           <a href="#" class="contact-info-item"><i class="fas fa-clock"></i><span>Response within 24 hours</span></a>
         </div>
       </div>
-      <form class="contact-form reveal">
-        <div class="form-group"><label>Your Name</label><input type="text" required placeholder="Jane Reyes"></div>
-        <div class="form-group"><label>Email</label><input type="email" required placeholder="jane@company.com"></div>
-        <div class="form-group"><label>Company</label><input type="text" placeholder="Acme Operations Inc."></div>
-        <div class="form-group"><label>What are you trying to solve?</label><textarea required placeholder="Briefly describe the workflow, the team size, and what's currently broken or manual..."></textarea></div>
+      <form class="contact-form reveal" id="contact-form">
+        <div class="form-group"><label>Your Name</label><input type="text" id="form-name" required placeholder="Jane Reyes"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="form-email" required placeholder="jane@company.com"></div>
+        <div class="form-group"><label>Company</label><input type="text" id="form-company" placeholder="Acme Operations Inc."></div>
+        <div class="form-group"><label>What are you trying to solve?</label><textarea id="form-message" required placeholder="Briefly describe the workflow, the team size, and what's currently broken or manual..."></textarea></div>
         <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Send Project Brief <i class="fas fa-paper-plane"></i></button>
       </form>
     </div>
@@ -916,7 +979,7 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
     <button class="login-close" onclick="hideLogin()"><i class="fas fa-times"></i></button>
     <h3>Studio Access</h3>
     <p>Restricted Edit Mode</p>
-    <input type="text" id="login-user" class="login-input" placeholder="Username" autocomplete="username">
+    <input type="email" id="login-user" class="login-input" placeholder="Email" autocomplete="username">
     <input type="password" id="login-pass" class="login-input" placeholder="Password" autocomplete="current-password">
     <button class="login-btn" onclick="attemptLogin()">Enter Edit Mode</button>
     <div id="login-error" class="login-error">Invalid credentials. Please try again.</div>
@@ -932,7 +995,26 @@ body.edit-mode img[data-cms-id]:hover { outline: 2px solid var(--accent); }
   <button class="admin-btn danger" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i>Logout</button>
 </div>
 
+<!-- SUPABASE JS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
+const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // REPLACE WITH YOUR SUPABASE URL
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // REPLACE WITH YOUR SUPABASE ANON KEY
+
+let supabase = null;
+let isSupabaseConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_URL.startsWith('http');
+
+if (isSupabaseConfigured) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+// Fallback to localStorage if not configured (so site still works out of the box)
+let isLoggedIn = isSupabaseConfigured ? false : localStorage.getItem('lululab_admin') === 'true';
+let isEditMode = false;
+
 // === CURSOR & UI EFFECTS ===
 const cursor=document.querySelector('.cursor');
 const cursorRing=document.querySelector('.cursor-ring');
@@ -940,7 +1022,7 @@ let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
 function ring(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;cursorRing.style.left=rx+'px';cursorRing.style.top=ry+'px';requestAnimationFrame(ring);}
 ring();
-const hoverSelector='a,button,.service-card,.gallery-slot,.project-tab,.capability,.arch-item,.feature-item,.process-step';
+const hoverSelector='a,button,.service-card,.gallery-slot,.project-tab,.capability,.arch-item,.feature-item,.process-step,.contrast-card,.principle-card';
 document.querySelectorAll(hoverSelector).forEach(el=>{
   el.addEventListener('mouseenter',()=>{cursor.style.width='12px';cursor.style.height='12px';cursor.style.background='var(--accent-2)';cursorRing.style.width='52px';cursorRing.style.height='52px';cursorRing.style.opacity='0.8';});
   el.addEventListener('mouseleave',()=>{cursor.style.width='6px';cursor.style.height='6px';cursor.style.background='var(--accent)';cursorRing.style.width='32px';cursorRing.style.height='32px';cursorRing.style.opacity='0.4';});
@@ -971,33 +1053,123 @@ function animateCounter(el,target){
   }
   requestAnimationFrame(update);
 }
-window.addEventListener('load',()=>{
-  document.querySelectorAll('.stat-num').forEach(el=>{
-    const target=parseInt(el.dataset.target);
-    setTimeout(()=>animateCounter(el,target),400);
-  });
-  // Check URL hash for login on load
-  if (window.location.hash === '#login') {
-    showLogin();
-  }
-});
-
-document.querySelectorAll('.project').forEach(project=>{
-  const tabs=project.querySelectorAll('.project-tab');
-  const panels=project.querySelectorAll('.tab-panel');
-  tabs.forEach(tab=>{
-    tab.addEventListener('click',()=>{
-      const target=tab.dataset.tab;
-      tabs.forEach(t=>t.classList.remove('active'));
-      panels.forEach(p=>p.classList.remove('active'));
-      tab.classList.add('active');
-      project.querySelector(`.tab-panel[data-tab="${target}"]`).classList.add('active');
-    });
-  });
-});
 
 // ==========================================
-// GALLERY LOGIC (SECURE)
+// INITIALIZATION
+// ==========================================
+function initCmsIds() {
+    const textSelectors = 'h1, h2, h3, h4, h5, p, .stat-num, .project-title, .project-tagline, .service-title, .service-desc, .capability-title, .capability-desc, .feature-title, .feature-desc, .arch-item-title, .arch-item-desc, .process-step-title, .process-step-desc, .contact-title, .contact-sub, .role-pill, .contrast-item, .principle-card p';
+    let txtCounter = 0;
+    document.querySelectorAll(textSelectors).forEach(el => {
+        el.dataset.cmsId = 'txt_' + txtCounter++;
+    });
+    let imgCounter = 0;
+    document.querySelectorAll('img').forEach(el => {
+        el.dataset.cmsId = 'img_' + imgCounter++;
+    });
+}
+
+async function initApp() {
+    initCmsIds();
+    
+    if (isSupabaseConfigured) {
+        // Check Supabase session
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            isLoggedIn = true;
+            document.body.classList.add('admin-logged-in');
+            document.getElementById('admin-toolbar').classList.add('active');
+        }
+        
+        // Listen to auth changes
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                isLoggedIn = true;
+                document.body.classList.add('admin-logged-in');
+                document.getElementById('admin-toolbar').classList.add('active');
+            } else if (event === 'SIGNED_OUT') {
+                isLoggedIn = false;
+                isEditMode = false;
+                document.body.classList.remove('edit-mode', 'admin-logged-in');
+                document.getElementById('admin-toolbar').classList.remove('active');
+            }
+        });
+
+        // Load CMS data from Supabase
+        await loadCmsData();
+    } else {
+        // Fallback to localStorage
+        if (isLoggedIn) {
+            document.body.classList.add('admin-logged-in');
+            document.getElementById('admin-toolbar').classList.add('active');
+        }
+        loadLocalCmsData();
+    }
+
+    // Load stats
+    window.addEventListener('load',()=>{
+      document.querySelectorAll('.stat-num').forEach(el=>{
+        const target=parseInt(el.dataset.target);
+        setTimeout(()=>animateCounter(el,target),400);
+      });
+      if (window.location.hash === '#login') {
+        showLogin();
+      }
+    });
+
+    // Setup tabs
+    document.querySelectorAll('.project').forEach(project=>{
+      const tabs=project.querySelectorAll('.project-tab');
+      const panels=project.querySelectorAll('.tab-panel');
+      tabs.forEach(tab=>{
+        tab.addEventListener('click',()=>{
+          const target=tab.dataset.tab;
+          tabs.forEach(t=>t.classList.remove('active'));
+          panels.forEach(p=>p.classList.remove('active'));
+          tab.classList.add('active');
+          project.querySelector(`.tab-panel[data-tab="${target}"]`).classList.add('active');
+        });
+      });
+    });
+}
+
+// ==========================================
+// DATA LOADING
+// ==========================================
+async function loadCmsData() {
+    if (!supabase) return loadLocalCmsData();
+    const { data, error } = await supabase.from('cms_content').select('*');
+    if (error) return console.error("CMS Load Error", error);
+    
+    const cmsMap = {};
+    data.forEach(row => cmsMap[row.id] = row.content);
+    
+    document.querySelectorAll('[data-cms-id]').forEach(el => {
+        const id = el.dataset.cmsId;
+        if (cmsMap[id]) {
+            if (el.tagName === 'IMG') el.src = cmsMap[id];
+            else el.innerHTML = cmsMap[id];
+        }
+    });
+}
+
+function loadLocalCmsData() {
+    const saved = localStorage.getItem('lululab_cms_data');
+    if (!saved) return;
+    try {
+        const data = JSON.parse(saved);
+        for (const [id, content] of Object.entries(data)) {
+            const el = document.querySelector(`[data-cms-id="${id}"]`);
+            if (el) {
+                if (el.tagName === 'IMG') el.src = content;
+                else el.innerHTML = content;
+            }
+        }
+    } catch(e) { console.error("Local CMS Load Error", e); }
+}
+
+// ==========================================
+// GALLERY LOGIC
 // ==========================================
 function setupSlot(slot){
   const input=slot.querySelector('input[type="file"]');
@@ -1005,7 +1177,7 @@ function setupSlot(slot){
   const prompt=slot.querySelector('.upload-prompt');
   const removeBtn=slot.querySelector('.remove-btn');
   
-  slot.addEventListener('click',e=>{
+  slot.addEventListener('click',async e=>{
     if(!isLoggedIn) return; // Block visitors
     if(e.target===removeBtn||removeBtn.contains(e.target))return;
     if(!slot.classList.contains('has-image')&&input){input.click();}
@@ -1036,21 +1208,46 @@ function setupSlot(slot){
     });
   }
 }
-function handleImageUpload(slot,file){
+
+async function handleImageUpload(slot,file){
   if(file.size>10*1024*1024){showToast('Image too large (max 10MB)','fa-triangle-exclamation');return;}
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const img=slot.querySelector('img');
-    const prompt=slot.querySelector('.upload-prompt');
-    if(img){
-      img.src=e.target.result;
-      img.alt=file.name;
-      slot.classList.add('has-image');
-      if(prompt)prompt.style.display='none';
-      showToast('Screenshot added to gallery','fa-check-circle');
-    }
-  };
-  reader.readAsDataURL(file);
+  
+  if (isSupabaseConfigured) {
+      // Upload to Supabase Storage
+      const fileName = `gallery_${Date.now()}_${file.name}`;
+      const { data, error } = await supabase.storage.from('cms-images').upload(fileName, file);
+      if (error) {
+          showToast('Upload failed', 'fa-triangle-exclamation');
+          return;
+      }
+      const { data: urlData } = supabase.storage.from('cms-images').getPublicUrl(fileName);
+      const publicUrl = urlData.publicUrl;
+      
+      const img=slot.querySelector('img');
+      const prompt=slot.querySelector('.upload-prompt');
+      if(img){
+        img.src=publicUrl;
+        img.alt=file.name;
+        slot.classList.add('has-image');
+        if(prompt)prompt.style.display='none';
+        showToast('Screenshot added! Click Save to keep.','fa-check-circle');
+      }
+  } else {
+      // Fallback to base64 local storage
+      const reader=new FileReader();
+      reader.onload=e=>{
+        const img=slot.querySelector('img');
+        const prompt=slot.querySelector('.upload-prompt');
+        if(img){
+          img.src=e.target.result;
+          img.alt=file.name;
+          slot.classList.add('has-image');
+          if(prompt)prompt.style.display='none';
+          showToast('Screenshot added','fa-check-circle');
+        }
+      };
+      reader.readAsDataURL(file);
+  }
 }
 document.querySelectorAll('.gallery-slot').forEach(setupSlot);
 
@@ -1068,8 +1265,6 @@ document.querySelectorAll('.add-image-btn').forEach(btn=>{
     `;
     gallery.appendChild(slot);
     setupSlot(slot);
-    slot.addEventListener('mouseenter',()=>{cursor.style.width='12px';cursor.style.height='12px';cursorRing.style.width='52px';cursorRing.style.height='52px';});
-    slot.addEventListener('mouseleave',()=>{cursor.style.width='6px';cursor.style.height='6px';cursorRing.style.width='32px';cursorRing.style.height='32px';});
     slot.scrollIntoView({behavior:'smooth',block:'center'});
     showToast('New image slot added','fa-plus-circle');
   });
@@ -1109,14 +1304,12 @@ document.querySelectorAll('.note-composer-btn.save').forEach(btn=>{
     note.querySelector('.note-text').textContent=text;
     gallery.appendChild(note);
     note.querySelector('.note-remove').addEventListener('click',()=>{
-      note.style.opacity='0';
-      note.style.transform='translateX(-20px)';
-      setTimeout(()=>note.remove(),300);
+      note.remove();
       showToast('Note removed','fa-trash');
     });
     textarea.value='';
     composer.classList.remove('active');
-    showToast('Note added to gallery','fa-check-circle');
+    showToast('Note added! Click Save to keep.','fa-check-circle');
   });
 });
 
@@ -1134,12 +1327,31 @@ function showToast(message,icon='fa-check-circle'){
   },2800);
 }
 
-document.querySelector('.contact-form')?.addEventListener('submit',e=>{
+// ==========================================
+// CONTACT FORM (SUPABASE)
+// ==========================================
+document.getElementById('contact-form')?.addEventListener('submit', async e => {
   e.preventDefault();
-  showToast('Thanks — we\'ll be in touch within 24 hours.','fa-paper-plane');
-  e.target.reset();
+  const name = document.getElementById('form-name').value;
+  const email = document.getElementById('form-email').value;
+  const company = document.getElementById('form-company').value;
+  const message = document.getElementById('form-message').value;
+
+  if (isSupabaseConfigured) {
+      const { error } = await supabase.from('contact_messages').insert([{ name, email, company, message }]);
+      if (error) {
+          showToast('Error sending message.', 'fa-triangle-exclamation');
+      } else {
+          showToast('Thanks — we\'ll be in touch within 24 hours.','fa-paper-plane');
+          e.target.reset();
+      }
+  } else {
+      showToast('Thanks — we\'ll be in touch within 24 hours.','fa-paper-plane');
+      e.target.reset();
+  }
 });
 
+// Smooth scrolling
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const id=a.getAttribute('href');
@@ -1155,53 +1367,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 });
 
 // ==========================================
-// HIDDEN CMS & ADMIN LOGIC
+// AUTHENTICATION & CMS SAVING
 // ==========================================
-const ADMIN_USER = 'Jeinna';
-const ADMIN_PASS_B64 = 'JEplaW5uYTE4MDIk'; // Base64 for $Jeinna1802$ let isLoggedIn = localStorage.getItem('lululab_admin') === 'true';
-let isEditMode = false;
-
-// Initialize CMS IDs on load
-function initCmsIds() {
-    const textSelectors = 'h1, h2, h3, h4, h5, p, .stat-num, .project-title, .project-tagline, .service-title, .service-desc, .capability-title, .capability-desc, .feature-title, .feature-desc, .arch-item-title, .arch-item-desc, .process-step-title, .process-step-desc, .contact-title, .contact-sub, .role-pill';
-    let txtCounter = 0;
-    document.querySelectorAll(textSelectors).forEach(el => {
-        el.dataset.cmsId = 'txt_' + txtCounter++;
-    });
-    let imgCounter = 0;
-    document.querySelectorAll('img').forEach(el => {
-        el.dataset.cmsId = 'img_' + imgCounter++;
-    });
-}
-
-// Load saved content from local storage
-function loadCmsData() {
-    const saved = localStorage.getItem('lululab_cms_data');
-    if (!saved) return;
-    try {
-        const data = JSON.parse(saved);
-        for (const [id, content] of Object.entries(data)) {
-            const el = document.querySelector(`[data-cms-id="${id}"]`);
-            if (el) {
-                if (el.tagName === 'IMG') el.src = content;
-                else el.innerHTML = content;
-            }
-        }
-    } catch(e) { console.error("CMS Load Error", e); }
-}
-
-// Run initialization immediately
-initCmsIds();
-loadCmsData();
-
-// Apply admin state on load
-if (isLoggedIn) {
-    document.body.classList.add('admin-logged-in');
-    document.getElementById('admin-toolbar').classList.add('active');
-}
-
-// Trigger login via URL hash or keyboard shortcut
-// Changed to Alt/Option + L for Mac compatibility
 document.addEventListener('keydown', (e) => {
     if (e.altKey && (e.key === 'l' || e.key === 'L')) {
         e.preventDefault();
@@ -1222,21 +1389,34 @@ function hideLogin() {
     document.getElementById('login-modal').classList.remove('active');
 }
 
-function attemptLogin() {
-    const user = document.getElementById('login-user').value;
+async function attemptLogin() {
+    const email = document.getElementById('login-user').value;
     const pass = document.getElementById('login-pass').value;
     const errBox = document.getElementById('login-error');
     
-    if (user === ADMIN_USER && btoa(pass) === ADMIN_PASS_B64) {
-        isLoggedIn = true;
-        localStorage.setItem('lululab_admin', 'true');
-        document.body.classList.add('admin-logged-in');
-        document.getElementById('admin-toolbar').classList.add('active');
-        hideLogin();
-        showToast('Edit mode unlocked.', 'fa-unlock');
+    if (isSupabaseConfigured) {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+        if (error) {
+            errBox.style.display = 'block';
+            setTimeout(() => errBox.style.display = 'none', 3000);
+        } else {
+            hideLogin();
+            showToast('Edit mode unlocked.', 'fa-unlock');
+            await loadCmsData(); // Reload DB data
+        }
     } else {
-        errBox.style.display = 'block';
-        setTimeout(() => errBox.style.display = 'none', 3000);
+        // Fallback local auth
+        if (email === 'Jeinna' && btoa(pass) === 'JEplaW5uYTE4MDIk') {
+            isLoggedIn = true;
+            localStorage.setItem('lululab_admin', 'true');
+            document.body.classList.add('admin-logged-in');
+            document.getElementById('admin-toolbar').classList.add('active');
+            hideLogin();
+            showToast('Edit mode unlocked.', 'fa-unlock');
+        } else {
+            errBox.style.display = 'block';
+            setTimeout(() => errBox.style.display = 'none', 3000);
+        }
     }
 }
 
@@ -1249,7 +1429,6 @@ function toggleEditMode() {
         btn.innerHTML = '<i class="fas fa-eye"></i>Exit Edit';
         showToast('Edit mode active. Click text or images to edit.', 'fa-pen');
         
-        // Apply contenteditable to text elements and click handlers to images
         document.querySelectorAll('[data-cms-id]').forEach(el => {
             if (el.tagName === 'IMG') {
                 el.addEventListener('click', handleImageEdit);
@@ -1261,7 +1440,6 @@ function toggleEditMode() {
         btn.innerHTML = '<i class="fas fa-pen"></i>Toggle Edit';
         showToast('Edit mode paused.', 'fa-eye');
         
-        // Remove contenteditable and image click handlers
         document.querySelectorAll('[data-cms-id]').forEach(el => {
             if (el.tagName === 'IMG') {
                 el.removeEventListener('click', handleImageEdit);
@@ -1272,33 +1450,60 @@ function toggleEditMode() {
     }
 }
 
-function handleImageEdit(e) {
+async function handleImageEdit(e) {
     if (!isEditMode) return;
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
-    input.onchange = ev => {
+    input.onchange = async ev => {
         const file = ev.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = readerEv => {
-                e.target.src = readerEv.target.result;
-                showToast('Image updated. Click Save to keep.', 'fa-image');
-            };
-            reader.readAsDataURL(file);
+            if (isSupabaseConfigured) {
+                const fileName = `cms_${Date.now()}_${file.name}`;
+                const { data, error } = await supabase.storage.from('cms-images').upload(fileName, file);
+                if (!error) {
+                    const { data: urlData } = supabase.storage.from('cms-images').getPublicUrl(fileName);
+                    e.target.src = urlData.publicUrl;
+                    showToast('Image updated. Click Save to keep.', 'fa-image');
+                } else {
+                    showToast('Image upload failed.', 'fa-triangle-exclamation');
+                }
+            } else {
+                const reader = new FileReader();
+                reader.onload = readerEv => {
+                    e.target.src = readerEv.target.result;
+                    showToast('Image updated. Click Save to keep.', 'fa-image');
+                };
+                reader.readAsDataURL(file);
+            }
         }
     };
     input.click();
 }
 
-function saveChanges() {
-    const data = {};
+async function saveChanges() {
+    const rows = [];
     document.querySelectorAll('[data-cms-id]').forEach(el => {
-        if (el.tagName === 'IMG') data[el.dataset.cmsId] = el.src;
-        else data[el.dataset.cmsId] = el.innerHTML;
+        rows.push({ 
+            id: el.dataset.cmsId, 
+            content: el.tagName === 'IMG' ? el.src : el.innerHTML 
+        });
     });
-    localStorage.setItem('lululab_cms_data', JSON.stringify(data));
-    showToast('Changes saved to browser successfully.', 'fa-check-circle');
+
+    if (isSupabaseConfigured) {
+        const { error } = await supabase.from('cms_content').upsert(rows, { onConflict: 'id' });
+        if (!error) {
+            showToast('Saved to Supabase successfully.', 'fa-check-circle');
+        } else {
+            showToast('Error saving to database.', 'fa-triangle-exclamation');
+        }
+    } else {
+        // Fallback
+        const data = {};
+        rows.forEach(row => data[row.id] = row.content);
+        localStorage.setItem('lululab_cms_data', JSON.stringify(data));
+        showToast('Changes saved to browser successfully.', 'fa-check-circle');
+    }
 }
 
 function exportHTML() {
@@ -1320,13 +1525,16 @@ function exportHTML() {
     showToast('Exporting updated HTML file...', 'fa-download');
 }
 
-function logoutAdmin() {
-    localStorage.removeItem('lululab_admin');
-    isLoggedIn = false;
-    isEditMode = false;
-    document.body.classList.remove('edit-mode');
-    document.body.classList.remove('admin-logged-in');
-    document.getElementById('admin-toolbar').classList.remove('active');
+async function logoutAdmin() {
+    if (isSupabaseConfigured) {
+        await supabase.auth.signOut();
+    } else {
+        localStorage.removeItem('lululab_admin');
+        isLoggedIn = false;
+        isEditMode = false;
+        document.body.classList.remove('edit-mode', 'admin-logged-in');
+        document.getElementById('admin-toolbar').classList.remove('active');
+    }
     showToast('Logged out successfully.', 'fa-sign-out-alt');
 }
 
@@ -1334,6 +1542,9 @@ function logoutAdmin() {
 document.getElementById('login-modal').addEventListener('click', (e) => {
     if (e.target.id === 'login-modal') hideLogin();
 });
+
+// Start the app
+initApp();
 </script>
 </body>
 </html>
